@@ -786,6 +786,12 @@
             min-height: 60px;
         }
 
+        .chart-toggle-btn.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
         .tradingview-widget-container {
             width: 100%;
             height: 600px;
@@ -1601,14 +1607,14 @@
                 <div class="analysis-nav-group crypto-nav show" id="cryptoNav">
                     <div class="nav-group-title">Krypto-Asset</div>
                     <div class="nav-group-content">
-                        <button class="analysis-nav-btn sub" data-subtab="bitcoin">
+                        <button class="analysis-nav-btn sub active" data-subtab="bitcoin">
                             <div class="nav-btn-icon">₿</div>
                             <div class="nav-btn-content">
                                 <div class="nav-btn-title">Bitcoin</div>
                                 <div class="nav-btn-subtitle">BTC/USD</div>
                             </div>
                         </button>
-                        <button class="analysis-nav-btn sub active" data-subtab="altcoins">
+                        <button class="analysis-nav-btn sub" data-subtab="altcoins">
                             <div class="nav-btn-icon">🪙</div>
                             <div class="nav-btn-content">
                                 <div class="nav-btn-title">Altcoins</div>
@@ -1683,7 +1689,19 @@
             </div>
 
             <!-- Chart Container -->
-            <div class="chart-container bitcoin-container" style="display: none;">
+            <div class="chart-container bitcoin-container" style="display: block;">
+                <!-- Chart Toggle Buttons -->
+                <div class="button-group chart-toggle-buttons">
+                    <button class="chart-toggle-btn active" data-view="screenshot">
+                        <span class="btn-icon">📊</span>
+                        <span class="btn-text">Technische Analyse</span>
+                    </button>
+                    <button class="chart-toggle-btn" data-view="live">
+                        <span class="btn-icon">📈</span>
+                        <span class="btn-text">Live Chart und Indikatoren</span>
+                    </button>
+                </div>
+                
                 <!-- TradingView Widget -->
                 <div class="tradingview-widget-container" id="live-chart-view">
                     <div id="tradingview_btc_chart"></div>
@@ -1696,7 +1714,7 @@
             </div>
 
             <!-- Altcoins Container -->
-            <div class="altcoins-container" style="display: block;">
+            <div class="altcoins-container" style="display: none;">
                 <!-- Altcoins Button Navigation -->
                 <div class="altcoins-button-nav">
                     <button class="altcoin-nav-btn active" data-altcoin="ethereum">
@@ -1894,14 +1912,14 @@
             </div>
 
             <!-- Trading Info Container - nur für Bitcoin -->
-            <div class="trading-info-container" id="bitcoin-trading-info" style="display: none;">
+            <div class="trading-info-container" id="bitcoin-trading-info" style="display: block;">
                 <!-- Trading Levels Info (für Screenshot View) -->
                 <div class="trading-levels-info" id="screenshot-info">
                     <div class="level-item resistance">
                         <div class="level-icon">🔴</div>
                         <div class="level-label">WIDERSTAND</div>
                         <div class="level-value">121.100$</div>
-                        <div class="level-description">Starker Widerstandsbereich, mehrfach getestet. Breakout könnte weiteren Aufwärtstrend einleiten.</div>
+                        <div class="level-description">Starker Widerstandsbereich, mehrfach getestet. Ich gehe davon aus, dass der bullische Trend zunächst beendet wird.</div>
                     </div>
                     <div class="level-item support">
                         <div class="level-icon">🟠</div>
@@ -1936,28 +1954,28 @@
                         <div class="level-icon">📈</div>
                         <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">MACD</div>
                         <div class="level-value positive">Bullish Crossover</div>
-                        <div class="level-description">MACD über Signallinie: Positiver Momentum-Indikator zeigt starken Aufwärtstrend.</div>
+                        <div class="level-description">MACD über Signallinie: Positiver Momentum-Indikator zeigt starken Aufwärtstrend. MACD misst die Differenz zwischen zwei exponentiellen Moving Averages (12 und 26 Perioden).</div>
                     </div>
 
                     <div class="level-item critical">
                         <div class="level-icon">🔋</div>
                         <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">RSI</div>
-                        <div class="level-value neutral">58.5</div>
-                        <div class="level-description">Neutraler Bereich mit bullischer Tendenz. Noch kein überkauftes Niveau erreicht.</div>
+                        <div class="level-value neutral">67.5</div>
+                        <div class="level-description">Neutraler Bereich mit bullischer Tendenz. RSI (Relative Strength Index) misst die Geschwindigkeit und Änderung von Preisbewegungen. Werte über 70 = überkauft, unter 30 = überverkauft.</div>
                     </div>
 
                     <div class="level-item target">
                         <div class="level-icon">〽️</div>
                         <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">20 MA</div>
                         <div class="level-value positive">Unterstützung</div>
-                        <div class="level-description">Preis über 20 MA: Bestätigt mittelfristigen Aufwärtstrend.</div>
+                        <div class="level-description">Preis über 20 MA: Bestätigt mittelfristigen Aufwärtstrend. 20-Perioden Moving Average zeigt die durchschnittliche Preisentwicklung der letzten 20 Perioden.</div>
                     </div>
 
                     <div class="level-item summary" style="grid-column: 1 / -1;">
                         <div class="level-icon">📝</div>
                         <div class="level-label">FAZIT</div>
                         <div class="level-value" style="font-size: 28px; margin: 15px 0;">Bullish</div>
-                        <div class="level-description">Technische Indikatoren zeigen einen starken Aufwärtstrend. MACD und MA bestätigen die bullische Struktur, während der RSI noch Raum für weitere Anstiege lässt.</div>
+                        <div class="level-description">Technische Indikatoren zeigen einen starken Aufwärtstrend. MACD über Signallinie bestätigt bullisches Momentum, RSI bei 67.5 zeigt noch Raum für weitere Anstiege, und 20 MA als Unterstützung bestätigt die bullische Struktur. Alle Signale deuten auf eine Fortsetzung des Aufwärtstrends hin.</div>
                     </div>
                 </div>
             </div>
@@ -2512,6 +2530,11 @@
             const cryptoButtons = document.querySelectorAll('[data-subtab]');
             const bitcoinTradingInfo = document.getElementById('bitcoin-trading-info');
             
+            // Bitcoin-Trading-Info standardmäßig anzeigen
+            if (bitcoinTradingInfo) {
+                bitcoinTradingInfo.style.display = 'block';
+            }
+            
             cryptoButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const subtab = this.dataset.subtab;
@@ -2815,89 +2838,13 @@
             }
         }
 
-        // Technische Indikatoren aktualisieren
+        // Technische Indikatoren aktualisieren (vereinfacht)
         function updateTechnicalIndicators() {
-            // EMA Kreuzungen
-            const ema9Value = document.getElementById('ema9-value');
-            const ema21Value = document.getElementById('ema21-value');
-            const emaAnalysis = document.getElementById('ema-analysis');
-            
-            const ema9 = 119250; // Beispielwert
-            const ema21 = 118800; // Beispielwert
-            
-            ema9Value.textContent = '$' + ema9.toLocaleString();
-            ema21Value.textContent = '$' + ema21.toLocaleString();
-            
-            if (ema9 > ema21) {
-                emaAnalysis.textContent = '🚀 Bullishes Kreuzungsmuster: EMA 9 über EMA 21 deutet auf kurzfristigen Aufwärtstrend hin.';
-                emaAnalysis.style.color = '#00ff88';
-            } else {
-                emaAnalysis.textContent = '📉 Bearishes Kreuzungsmuster: EMA 9 unter EMA 21 deutet auf mögliche Korrektur hin.';
-                emaAnalysis.style.color = '#ff4757';
-            }
-
-            // RSI
-            const rsiValue = document.getElementById('rsi-value');
-            const rsiAnalysis = document.getElementById('rsi-analysis');
-            
-            const rsi = 65; // Beispielwert
-            
-            rsiValue.textContent = rsi.toFixed(2);
-            
-            if (rsi > 70) {
-                rsiAnalysis.textContent = '⚠️ Überkauft: RSI über 70 deutet auf mögliche Korrektur hin.';
-                rsiAnalysis.style.color = '#ff4757';
-            } else if (rsi < 30) {
-                rsiAnalysis.textContent = '💡 Überverkauft: RSI unter 30 bietet potenzielle Kaufgelegenheit.';
-                rsiAnalysis.style.color = '#00ff88';
-            } else {
-                rsiAnalysis.textContent = '✅ Neutraler Bereich: RSI zwischen 30 und 70 zeigt ausgeglichenes Momentum.';
-                rsiAnalysis.style.color = '#ffa502';
-            }
-
-            // MACD
-            const macdValue = document.getElementById('macd-value');
-            const macdAnalysis = document.getElementById('macd-analysis');
-            
-            const macd = 250; // Beispielwert
-            const signal = 150; // Beispielwert
-            
-            macdValue.innerHTML = `MACD: <span style="color: #00ff88">$${macd}</span><br>Signal: <span style="color: #ff4757">$${signal}</span>`;
-            
-            if (macd > signal) {
-                macdAnalysis.textContent = '🚀 Bullishes Signal: MACD über Signallinie bestätigt Aufwärtstrend.';
-                macdAnalysis.style.color = '#00ff88';
-            } else {
-                macdAnalysis.textContent = '📉 Bearishes Signal: MACD unter Signallinie deutet auf Abwärtstrend hin.';
-                macdAnalysis.style.color = '#ff4757';
-            }
-
-            // Bollinger Bänder
-            const bbValue = document.getElementById('bb-value');
-            const bbAnalysis = document.getElementById('bb-analysis');
-            
-            const currentPrice = 119000; // Beispielwert
-            const upperBand = 122000; // Beispielwert
-            const lowerBand = 116000; // Beispielwert
-            
-            bbValue.innerHTML = `Oberes Band: <span style="color: #ff4757">$${upperBand.toLocaleString()}</span><br>` +
-                              `Unteres Band: <span style="color: #00ff88">$${lowerBand.toLocaleString()}</span>`;
-            
-            const bandwidth = ((upperBand - lowerBand) / ((upperBand + lowerBand) / 2)) * 100;
-            
-            if (currentPrice > upperBand) {
-                bbAnalysis.textContent = '⚠️ Preis über oberem Band: Mögliche Überkauft-Situation.';
-                bbAnalysis.style.color = '#ff4757';
-            } else if (currentPrice < lowerBand) {
-                bbAnalysis.textContent = '💡 Preis unter unterem Band: Potenzielle Kaufgelegenheit.';
-                bbAnalysis.style.color = '#00ff88';
-            } else {
-                bbAnalysis.textContent = `✅ Preis innerhalb der Bänder. Volatilität: ${bandwidth.toFixed(2)}%`;
-                bbAnalysis.style.color = '#ffa502';
-            }
+            console.log('Technische Indikatoren werden aktualisiert...');
+            // Hier können später echte API-Calls für Live-Daten implementiert werden
         }
 
-                // Alternative Datenquelle mit deinen echten Trading-Levels
+        // Alternative Datenquelle mit deinen echten Trading-Levels
         async function loadAlternativeData() {
             try {
                 console.log('🔄 Lade alternative Datenquelle mit deinen Trading-Levels...');
