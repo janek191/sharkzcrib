@@ -1,0 +1,3303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SharkzCrib - Krypto Chartanalysen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #111111 50%, #1a1a1a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header und Logo */
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo-main {
+            font-family: 'Courier New', monospace;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .logo-sub {
+            font-size: 1.2rem;
+            color: #cccccc;
+            letter-spacing: 8px;
+            font-weight: 300;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-top: 15px;
+            font-style: normal;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab {
+            padding: 15px 30px;
+            margin: 0 5px;
+            background: transparent;
+            border: none;
+            color: #cccccc;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-tab:hover::before {
+            left: 100%;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            color: #000000;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Analysis Navigation */
+        .analysis-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 20px;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .analysis-nav-group {
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-nav-group.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-group-title {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+
+        .nav-group-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .analysis-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(26, 26, 26, 1);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            min-height: 60px;
+            width: 100%;
+            position: relative;
+        }
+
+        .analysis-nav-btn:hover {
+            background: rgba(38, 38, 38, 1);
+        }
+
+        .analysis-nav-btn.active {
+            background: rgba(26, 26, 26, 1);
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .analysis-nav-btn.active::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 12px;
+            border: 1px solid #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+            animation: glowing 2s ease-in-out infinite;
+        }
+
+        @keyframes glowing {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .nav-btn-icon {
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn-content {
+            flex-grow: 1;
+        }
+
+        .nav-btn-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+
+        .nav-btn-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+
+
+        /* Content Areas */
+        .content-area {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-area.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* News Sections */
+        .news-sections-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .section-toggle-btn {
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+        }
+
+        .section-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .section-toggle-btn.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .news-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .news-section.active {
+            display: block;
+        }
+
+        /* News Filters */
+        .news-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .news-filter-btn {
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .news-filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .news-filter-btn.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .news-loading {
+            text-align: center;
+            padding: 40px;
+            color: #ffffff;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #00ff88;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .news-error {
+            text-align: center;
+            padding: 40px;
+            color: #ff4757;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 15px;
+            margin: 20px;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .news-grid.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .news-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            border-color: rgba(0, 212, 255, 0.3);
+        }
+
+        /* Breaking News Styling */
+        .breaking-news {
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
+        }
+
+        /* News Importance Styling */
+        .news-card.high {
+            border-color: #ff4757;
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 255, 255, 0.05));
+        }
+
+        .news-card.medium {
+            border-color: #ffa502;
+            background: linear-gradient(135deg, rgba(255, 165, 2, 0.1), rgba(255, 255, 255, 0.05));
+        }
+
+        /* News Meta Information */
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .news-source-tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #00ff88;
+        }
+
+        /* News Footer */
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .read-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .read-more-btn:hover {
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        /* Sentiment Indicator */
+        .sentiment-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .news-category {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .news-category.bitcoin { background: rgba(247, 147, 26, 0.1); color: #f7931a; border-color: rgba(247, 147, 26, 0.3); }
+        .news-category.market { background: rgba(0, 212, 255, 0.1); color: #00d4ff; border-color: rgba(0, 212, 255, 0.3); }
+        .news-category.regulation { background: rgba(255, 71, 87, 0.1); color: #ff4757; border-color: rgba(255, 71, 87, 0.3); }
+
+        .news-date {
+            color: #ffffff;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            color: #cccccc;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .news-source {
+            font-size: 0.8rem;
+            color: #00ff88;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .news-source:hover {
+            color: #ffffff;
+        }
+
+        /* News Navigation */
+        .news-navigation {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .current-date {
+            font-size: 1.2rem;
+            color: #ffffff;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button-container {
+            text-align: center;
+            margin: 15px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .nav-button-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn .btn-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .newer-btn:hover .btn-icon {
+            transform: translateY(-3px);
+        }
+
+        .older-btn:hover .btn-icon {
+            transform: translateY(3px);
+        }
+
+        .nav-btn.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .nav-btn.loading .btn-icon {
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
+        }
+
+        /* Analysis Section */
+        .analysis-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Altcoins Navigation */
+        .altcoins-button-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .altcoin-nav-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 20px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .altcoin-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .altcoin-nav-btn.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .coin-icon {
+            font-size: 1.2em;
+        }
+
+        .coin-name {
+            font-weight: 500;
+        }
+
+        /* Chart Placeholder */
+        .chart-placeholder {
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .placeholder-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .placeholder-icon {
+            font-size: 48px;
+            opacity: 0.5;
+        }
+
+        .placeholder-text {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* TradingView Chart Container */
+        .chart-container {
+            background: rgba(26, 26, 26, 1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenshot-view {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .screenshot-img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        /* Trading Levels Info */
+        .trading-levels-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .level-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .level-item:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .level-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .level-label {
+            font-size: 0.9rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .level-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .level-description {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .level-item.resistance {
+            border-color: rgba(255, 71, 87, 0.3);
+        }
+        .level-item.resistance .level-value {
+            color: #ff4757;
+        }
+
+        .level-item.support {
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+        .level-item.support .level-value {
+            color: #00ff88;
+        }
+
+        .level-item.critical {
+            border-color: rgba(255, 165, 2, 0.3);
+        }
+        .level-item.critical .level-value {
+            color: #ffa502;
+        }
+
+        .level-item.target {
+            border-color: rgba(0, 136, 255, 0.3);
+        }
+        .level-item.target .level-value {
+            color: #0088ff;
+        }
+
+        /* Gleiche Button-Größen */
+        .analysis-nav-btn {
+            min-height: 80px;
+        }
+
+        .chart-toggle-btn {
+            min-width: 200px;
+            min-height: 60px;
+        }
+
+        .tradingview-widget-container {
+            width: 100%;
+            height: 600px;
+            display: none;
+        }
+
+        #tradingview_btc_chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        #tradingview_btc_chart,
+        #tradingview_altcoins_chart {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .chart-placeholder {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.05));
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .chart-text {
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .analysis-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        /* Trend Indicators */
+        .trend-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 5px auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .trend-bullish {
+            background: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .trend-bearish {
+            background: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+
+        .trend-neutral {
+            background: #ffa502;
+            box-shadow: 0 0 10px rgba(255, 165, 2, 0.5);
+        }
+
+        /* Chart Slider Styling */
+        .chart-slider-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-slider-container {
+            margin-bottom: 25px;
+        }
+
+        .chart-slider {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .chart-slide {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chart-slide:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .chart-slide.active {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .chart-slide-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .chart-slide-desc {
+            font-size: 11px;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-explanation {
+            position: relative;
+            min-height: 150px;
+        }
+
+        /* Chart Annotations Section Styling */
+        .chart-annotations-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .annotations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .annotation-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .annotation-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .annotation-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .annotation-content h4 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .annotation-content p {
+            color: #cccccc;
+            line-height: 1.6;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .explanation-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .explanation-content.active {
+            display: block;
+        }
+
+        .explanation-content h4 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .explanation-content p {
+            color: #cccccc;
+            line-height: 1.6;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* Support/Resistance Linien Styling */
+        .support-resistance-line {
+            position: absolute !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 1px !important;
+            z-index: 9999 !important;
+            pointer-events: none !important;
+            animation: fadeIn 0.5s ease-in !important;
+            background: currentColor !important;
+            box-shadow: 0 0 6px currentColor !important;
+        }
+
+        .support-resistance-line div {
+            position: absolute !important;
+            right: 20px !important;
+            top: -25px !important;
+            padding: 6px 10px !important;
+            border-radius: 6px !important;
+            font-size: 11px !important;
+            font-weight: bold !important;
+            color: currentColor !important;
+            white-space: nowrap !important;
+            background: rgba(0, 0, 0, 0.85) !important;
+            border: 1px solid currentColor !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Loading State für Stats */
+        .stat-value.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .stat-value.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .logo-main {
+                font-size: 2.5rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-tab {
+                margin: 5px 0;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .sub-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .sub-tab {
+                margin: 5px 0;
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Gemeinsames Button Styling */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0 auto 30px;
+        }
+
+        .custom-btn {
+            flex: 1;
+            min-width: 160px;
+            max-width: 200px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
+            background: rgba(17, 17, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .custom-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .custom-btn.active {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .custom-btn .btn-icon {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Spezifische Button-Gruppen */
+        .chart-toggle-buttons,
+        .news-sections-toggle,
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0 auto 30px;
+        }
+
+        .chart-toggle-btn,
+        .section-toggle-btn,
+        .nav-tab {
+            flex: 1;
+            min-width: 160px;
+            max-width: 200px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 20px;
+            background: rgba(17, 17, 17, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Chart Views Styling */
+        .tradingview-widget-container,
+        .screenshot-view {
+            display: none;
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tradingview-widget-container.active,
+        .screenshot-view.active {
+            display: block;
+        }
+
+        .screenshot-view img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        /* Analysis Sections Styling */
+        .analysis-sections-container {
+            margin-top: 40px;
+        }
+
+        .analysis-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .analysis-section.active {
+            display: block;
+        }
+
+        .section-title {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 0 20px;
+        }
+
+        .analysis-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+        }
+
+        .card-header h4 {
+            color: #ffffff;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .card-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff88;
+            margin: 15px 0;
+        }
+
+        .card-description {
+            color: #cccccc;
+            line-height: 1.6;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .indicator-status {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 15px 0;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .ema-9 { color: #00ff88; }
+        .ema-21 { color: #ff4757; }
+
+        /* Spezifische Kartenfarben */
+        .analysis-card.resistance .card-value { color: #ff4757; }
+        .analysis-card.support-main .card-value { color: #ffa502; }
+        .analysis-card.support-critical .card-value { color: #ff4757; }
+        .analysis-card.target .card-value { color: #0088ff; }
+
+        /* Chart Screenshot Slider Styling */
+        .chart-screenshot-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .screenshot-slider-container {
+            margin-bottom: 20px;
+        }
+
+        .screenshot-slider {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .screenshot-slide {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 120px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .screenshot-slide:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .screenshot-slide.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .screenshot-title {
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .screenshot-desc {
+            color: #cccccc;
+            font-size: 11px;
+        }
+
+        .screenshot-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 400px;
+            position: relative;
+        }
+
+        .screenshot-content {
+            display: none;
+            height: 100%;
+        }
+
+        .screenshot-content.active {
+            display: block;
+        }
+
+        .screenshot-image-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenshot-placeholder {
+            width: 100%;
+            height: 350px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screenshot-placeholder.main-chart {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px dashed #00ff88;
+        }
+
+        .screenshot-placeholder.resistance {
+            background: linear-gradient(135deg, #2a1a1a 0%, #3a2a2a 100%);
+            border: 2px solid #ff4444;
+        }
+
+        .screenshot-placeholder.support1 {
+            background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 100%);
+            border: 2px solid #ffaa00;
+        }
+
+        .screenshot-placeholder.support2 {
+            background: linear-gradient(135deg, #2a1a1a 0%, #3a2a2a 100%);
+            border: 2px solid #ff4444;
+        }
+
+        .screenshot-placeholder.target {
+            background: linear-gradient(135deg, #1a1a2a 0%, #2a2a3a 100%);
+            border: 2px solid #0088ff;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            color: #ffffff;
+            padding: 20px;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .placeholder-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .placeholder-desc {
+            font-size: 16px;
+            color: #cccccc;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .placeholder-tip {
+            font-size: 14px;
+            color: #00ff88;
+            font-style: italic;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #00ff88;
+        }
+
+        .placeholder-details {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .detail-item {
+            color: #cccccc;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+
+    <div class="container">
+        <!-- Header mit Logo -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-main">sharkz</div>
+                <div class="logo-sub">CRIB</div>
+            </div>
+            <div class="tagline">Professionelle Chartanalysen & Marktinsights für Krypto & Aktien</div>
+        </header>
+
+        <!-- Hauptnavigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="news">📰 News & Updates</button>
+            <button class="nav-tab" data-tab="analysis">📊 Chartanalysen</button>
+        </nav>
+
+        <!-- Analysis Content -->
+        <div class="content-area" id="analysis">
+            <div class="analysis-navigation">
+                <!-- Haupt-Navigation für Analysen -->
+                <div class="analysis-nav-group">
+                    <div class="nav-group-title">Markt auswählen</div>
+                    <div class="nav-group-content">
+                        <button class="analysis-nav-btn main active" data-maintab="crypto">
+                            <div class="nav-btn-icon">💰</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Krypto</div>
+                                <div class="nav-btn-subtitle">Bitcoin & Altcoins</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn main" data-maintab="stocks">
+                            <div class="nav-btn-icon">📈</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Aktien</div>
+                                <div class="nav-btn-subtitle">USA & China</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-Navigation für Krypto -->
+                <div class="analysis-nav-group crypto-nav show" id="cryptoNav">
+                    <div class="nav-group-title">Krypto-Asset</div>
+                    <div class="nav-group-content">
+                        <button class="analysis-nav-btn sub" data-subtab="bitcoin">
+                            <div class="nav-btn-icon">₿</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Bitcoin</div>
+                                <div class="nav-btn-subtitle">BTC/USD</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub active" data-subtab="altcoins">
+                            <div class="nav-btn-icon">🪙</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Altcoins</div>
+                                <div class="nav-btn-subtitle">ETH, SOL, HBAR, FET, RNDR</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Altcoins Sub-Navigation -->
+                <div class="analysis-nav-group altcoins-nav" id="altcoinsNav" style="display: none;">
+                    <div class="nav-group-title">Altcoin auswählen</div>
+                    <div class="nav-group-content">
+                        <button class="analysis-nav-btn sub active" data-altcoin="ethereum">
+                            <div class="nav-btn-icon">Ξ</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Ethereum</div>
+                                <div class="nav-btn-subtitle">ETH/USD</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub" data-altcoin="solana">
+                            <div class="nav-btn-icon">◎</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Solana</div>
+                                <div class="nav-btn-subtitle">SOL/USD</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub" data-altcoin="hedera">
+                            <div class="nav-btn-icon">ℏ</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Hedera</div>
+                                <div class="nav-btn-subtitle">HBAR/USD</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub" data-altcoin="fetch">
+                            <div class="nav-btn-icon">🤖</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Fetch.ai</div>
+                                <div class="nav-btn-subtitle">FET/USD</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub" data-altcoin="render">
+                            <div class="nav-btn-icon">🎨</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">Render</div>
+                                <div class="nav-btn-subtitle">RNDR/USD</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-Navigation für Aktien -->
+                <div class="analysis-nav-group stocks-nav" id="stocksNav">
+                    <div class="nav-group-title">Aktienmarkt</div>
+                    <div class="nav-group-content">
+                        <button class="analysis-nav-btn sub" data-subtab="usa">
+                            <div class="nav-btn-icon">🇺🇸</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">USA</div>
+                                <div class="nav-btn-subtitle">S&P 500, NASDAQ</div>
+                            </div>
+                        </button>
+                        <button class="analysis-nav-btn sub" data-subtab="china">
+                            <div class="nav-btn-icon">🇨🇳</div>
+                            <div class="nav-btn-content">
+                                <div class="nav-btn-title">China</div>
+                                <div class="nav-btn-subtitle">SSE, SZSE</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container bitcoin-container" style="display: none;">
+                <!-- TradingView Widget -->
+                <div class="tradingview-widget-container" id="live-chart-view">
+                    <div id="tradingview_btc_chart"></div>
+                </div>
+                
+                <!-- Screenshot View -->
+                <div class="screenshot-view active" id="screenshot-view">
+                    <img src="BTC_1308.png" alt="Bitcoin Chart mit Trading-Niveaus" class="screenshot-img">
+                </div>
+            </div>
+
+            <!-- Altcoins Container -->
+            <div class="altcoins-container" style="display: block;">
+                <!-- Altcoins Button Navigation -->
+                <div class="altcoins-button-nav">
+                    <button class="altcoin-nav-btn active" data-altcoin="ethereum">
+                        <span class="coin-icon">Ξ</span>
+                        <span class="coin-name">Ethereum</span>
+                    </button>
+                    <button class="altcoin-nav-btn" data-altcoin="solana">
+                        <span class="coin-icon">◎</span>
+                        <span class="coin-name">Solana</span>
+                    </button>
+                    <button class="altcoin-nav-btn" data-altcoin="hedera">
+                        <span class="coin-icon">ℏ</span>
+                        <span class="coin-name">Hedera</span>
+                    </button>
+                    <button class="altcoin-nav-btn" data-altcoin="fetch">
+                        <span class="coin-icon">🤖</span>
+                        <span class="coin-name">Fetch.ai</span>
+                    </button>
+                    <button class="altcoin-nav-btn" data-altcoin="render">
+                        <span class="coin-icon">🎨</span>
+                        <span class="coin-name">Render</span>
+                    </button>
+                </div>
+
+                <!-- Altcoins Content -->
+                <div class="altcoins-content">
+                    <!-- Ethereum Section -->
+                    <div class="altcoin-section ethereum-section active">
+                        <h2 style="margin-bottom: 30px;">Ethereum (ETH) Analyse</h2>
+                        <div class="chart-container">
+                            <div class="screenshot-view active">
+                                <img src="ETH_1308.png" alt="Ethereum Chart mit Trading-Niveaus" class="screenshot-img">
+                            </div>
+                        </div>
+                        <div class="trading-levels-info">
+                            <div class="level-item resistance">
+                                <div class="level-icon">🔴</div>
+                                <div class="level-label">WIDERSTAND</div>
+                                <div class="level-value">4.860$</div>
+                                <div class="level-description">Entscheidender Widerstand vor dem All-Time-High. Bullische Korrektivbewegung muss hier durchbrechen.</div>
+                            </div>
+                            <div class="level-item support">
+                                <div class="level-icon">🟢</div>
+                                <div class="level-label">AKTUELLE UNTERSTÜTZUNG</div>
+                                <div class="level-value">4.100$</div>
+                                <div class="level-description">Verhaltene Bewegung zwischen aktuellem Niveau und ATH. Wichtige Unterstützung für weitere Aufwärtsbewegung.</div>
+                            </div>
+                            <div class="level-item critical">
+                                <div class="level-icon">⚠️</div>
+                                <div class="level-label">KRITISCHE UNTERSTÜTZUNG</div>
+                                <div class="level-value">3.400$</div>
+                                <div class="level-description">Verlust dieses Levels würde bullische Struktur gefährden. Enge Stops setzen.</div>
+                            </div>
+                            <div class="level-item target">
+                                <div class="level-icon">🎯</div>
+                                <div class="level-label">ATH-ZIEL</div>
+                                <div class="level-value">4.860$ → 5.200$</div>
+                                <div class="level-description">Nach Durchbruch über 4.860$: Test des All-Time-Highs und darüber hinaus.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solana Section -->
+                    <div class="altcoin-section solana-section" style="display: none;">
+                        <h2 style="margin-bottom: 30px;">Solana (SOL) Analyse</h2>
+                        <div class="chart-container">
+                            <div class="screenshot-view active">
+                                <img src="SOL_1308.png" alt="Solana Chart mit Trading-Niveaus" class="screenshot-img">
+                            </div>
+                        </div>
+                        <div class="trading-levels-info">
+                            <div class="level-item resistance">
+                                <div class="level-icon">🔴</div>
+                                <div class="level-label">WIDERSTAND</div>
+                                <div class="level-value">180$</div>
+                                <div class="level-description">Wichtiger Widerstand, der durchbrochen werden muss, um das All-Time-High zu testen.</div>
+                            </div>
+                            <div class="level-item support">
+                                <div class="level-icon">🟢</div>
+                                <div class="level-label">UNTERSTÜTZUNG</div>
+                                <div class="level-value">140$</div>
+                                <div class="level-description">Solide Unterstützung für bullische Aufwärtsbewegung. Niveaus müssen durchbrochen werden.</div>
+                            </div>
+                            <div class="level-item critical">
+                                <div class="level-icon">⚠️</div>
+                                <div class="level-label">KRITISCHE UNTERSTÜTZUNG</div>
+                                <div class="level-value">120$</div>
+                                <div class="level-description">Verlust dieses Levels würde bullische Struktur gefährden. Enge Stops setzen.</div>
+                            </div>
+                            <div class="level-item target">
+                                <div class="level-icon">🎯</div>
+                                <div class="level-label">ATH-TEST</div>
+                                <div class="level-value">180$ → 200$+</div>
+                                <div class="level-description">Nach Durchbruch der Widerstände: Test des All-Time-Highs und darüber hinaus.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hedera Section -->
+                    <div class="altcoin-section hedera-section" style="display: none;">
+                        <h2 style="margin-bottom: 30px;">Hedera (HBAR) Analyse</h2>
+                        <div class="chart-container">
+                            <div class="screenshot-view active">
+                                <img src="HBAR_1308.png" alt="Hedera Chart mit Trading-Niveaus" class="screenshot-img">
+                            </div>
+                        </div>
+                        <div class="trading-levels-info">
+                            <div class="level-item resistance">
+                                <div class="level-icon">🔴</div>
+                                <div class="level-label">UNTERSTÜTZUNGSBEREICHE</div>
+                                <div class="level-value">0.225$ & 0.178$</div>
+                                <div class="level-description">Wichtige Unterstützungsbereiche, die nach unten nicht durchbrochen werden dürfen, um bullische Struktur zu erhalten.</div>
+                            </div>
+                            <div class="level-item support">
+                                <div class="level-icon">🟢</div>
+                                <div class="level-label">NÄCHSTES NIVEAU</div>
+                                <div class="level-value">0.287$</div>
+                                <div class="level-description">Langfristig halten. Wichtige Unterstützung für bullische Aufwärtsbewegung.</div>
+                            </div>
+                            <div class="level-item critical">
+                                <div class="level-icon">⚠️</div>
+                                <div class="level-label">KRITISCHE UNTERSTÜTZUNG</div>
+                                <div class="level-value">0.178$</div>
+                                <div class="level-description">Verlust dieses Levels würde bullische Struktur gefährden. Enge Stops setzen.</div>
+                            </div>
+                            <div class="level-item target">
+                                <div class="level-icon">🎯</div>
+                                <div class="level-label">HIGH TEST</div>
+                                <div class="level-value">0.393$</div>
+                                <div class="level-description">Nach Durchbruch der Widerstände: All-Time-High bei 0.393$ antesten und darüber hinaus expandieren.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fetch.ai Section -->
+                    <div class="altcoin-section fetch-section" style="display: none;">
+                        <h2 style="margin-bottom: 30px;">Fetch.ai (FET) Analyse</h2>
+                        <div class="chart-container">
+                            <div class="screenshot-view active">
+                                <img src="FET_1308.png" alt="Fetch.ai Chart mit Trading-Niveaus" class="screenshot-img">
+                            </div>
+                        </div>
+                        <div class="trading-levels-info">
+                            <div class="level-item resistance">
+                                <div class="level-icon">🔴</div>
+                                <div class="level-label">KORREKTUR ABGESCHLOSSEN</div>
+                                <div class="level-value">3-teilige Abwärtsbewegung</div>
+                                <div class="level-description">3-teilige Abwärtsbewegung intern abgeschlossen. Bullische Struktur wiederhergestellt.</div>
+                            </div>
+                            <div class="level-item support">
+                                <div class="level-icon">🟢</div>
+                                <div class="level-label">UNTERSTÜTZUNG & STOP-LOSS</div>
+                                <div class="level-value">0.711$</div>
+                                <div class="level-description">Kritische Unterstützung, die gehalten werden muss, um bullische Aufwärtsbewegung zu bestätigen. Verlust dieses Levels würde bullische Struktur gefährden - enge Stops setzen.</div>
+                            </div>
+                            <div class="level-item target">
+                                <div class="level-icon">🎯</div>
+                                <div class="level-label">1$ ZIEL</div>
+                                <div class="level-value">1.00$</div>
+                                <div class="level-description">Nach Durchbruch der Widerstände: 1$-Niveau testen und darüber hinaus expandieren.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Render Section -->
+                    <div class="altcoin-section render-section" style="display: none;">
+                        <h2 style="margin-bottom: 30px;">Render (RNDR) Analyse</h2>
+                        <div class="chart-container">
+                            <div class="screenshot-view active">
+                                <img src="RENDER_1308.png" alt="Render Chart mit Trading-Niveaus" class="screenshot-img">
+                            </div>
+                        </div>
+                        <div class="trading-levels-info">
+                            <div class="level-item resistance">
+                                <div class="level-icon">🔴</div>
+                                <div class="level-label">ZIELZONE DURCHBRECHEN</div>
+                                <div class="level-value">5.46$</div>
+                                <div class="level-description">Aktuell noch in Zielzone, nach oben hin durchbrechen über 5.46$ erforderlich.</div>
+                            </div>
+                            <div class="level-item support">
+                                <div class="level-icon">🟢</div>
+                                <div class="level-label">UNTERSTÜTZUNG & STOP-LOSS</div>
+                                <div class="level-value">2.50$</div>
+                                <div class="level-description">Kritische Unterstützung, die nach unten hin gehalten werden muss, um bullische Struktur zu erhalten. Verlust dieses Levels würde bullische Struktur gefährden - enge Stops setzen.</div>
+                            </div>
+                            <div class="level-item target">
+                                <div class="level-icon">🎯</div>
+                                <div class="level-label">11.88$ ZIEL</div>
+                                <div class="level-value">11.88$</div>
+                                <div class="level-description">Bei bullischem Momentum: 11.88$-Niveau testen und darüber hinaus expandieren.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trading Info Container - nur für Bitcoin -->
+            <div class="trading-info-container" id="bitcoin-trading-info" style="display: none;">
+                <!-- Trading Levels Info (für Screenshot View) -->
+                <div class="trading-levels-info" id="screenshot-info">
+                    <div class="level-item resistance">
+                        <div class="level-icon">🔴</div>
+                        <div class="level-label">WIDERSTAND</div>
+                        <div class="level-value">121.100$</div>
+                        <div class="level-description">Starker Widerstandsbereich, mehrfach getestet. Breakout könnte weiteren Aufwärtstrend einleiten.</div>
+                    </div>
+                    <div class="level-item support">
+                        <div class="level-icon">🟠</div>
+                        <div class="level-label">HAUPTUNTERSTÜTZUNG</div>
+                        <div class="level-value">98.300$</div>
+                        <div class="level-description">Wichtige erste Unterstützung. Ideal für neue Long-Positionen bei erfolgreichen Tests.</div>
+                    </div>
+                    <div class="level-item critical">
+                        <div class="level-icon">⚠️</div>
+                        <div class="level-label">KRITISCHE UNTERSTÜTZUNGEN</div>
+                        <div class="level-value">78.250$ & 73.500$</div>
+                        <div class="level-description">Verlust dieser Levels könnte größere Korrektur einleiten. Enge Stops setzen.</div>
+                    </div>
+                    <div class="level-item target">
+                        <div class="level-icon">🎯</div>
+                        <div class="level-label">ZIELBEREICH</div>
+                        <div class="level-value">55.000$ - 76.377$</div>
+                        <div class="level-description">Optimaler Bereich für neue Long-Positionen bei Korrekturen.</div>
+                    </div>
+                </div>
+
+                <!-- Indicator Info (für Live Chart View) -->
+                <div class="trading-levels-info" id="live-info" style="display: none;">
+                    <div class="level-item resistance">
+                        <div class="level-icon">📊</div>
+                        <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">MARKT SENTIMENT</div>
+                        <div class="level-value positive">Bullish</div>
+                        <div class="level-description">Technische Indikatoren zeigen überwiegend positive Signale. Momentum ist auf der Käuferseite.</div>
+                    </div>
+
+                    <div class="level-item support">
+                        <div class="level-icon">📈</div>
+                        <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">MACD</div>
+                        <div class="level-value positive">Bullish Crossover</div>
+                        <div class="level-description">MACD über Signallinie: Positiver Momentum-Indikator zeigt starken Aufwärtstrend.</div>
+                    </div>
+
+                    <div class="level-item critical">
+                        <div class="level-icon">🔋</div>
+                        <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">RSI</div>
+                        <div class="level-value neutral">58.5</div>
+                        <div class="level-description">Neutraler Bereich mit bullischer Tendenz. Noch kein überkauftes Niveau erreicht.</div>
+                    </div>
+
+                    <div class="level-item target">
+                        <div class="level-icon">〽️</div>
+                        <div class="level-label" style="font-size: 24px; font-weight: 600; margin-bottom: 15px; color: #ffffff;">20 MA</div>
+                        <div class="level-value positive">Unterstützung</div>
+                        <div class="level-description">Preis über 20 MA: Bestätigt mittelfristigen Aufwärtstrend.</div>
+                    </div>
+
+                    <div class="level-item summary" style="grid-column: 1 / -1;">
+                        <div class="level-icon">📝</div>
+                        <div class="level-label">FAZIT</div>
+                        <div class="level-value" style="font-size: 28px; margin: 15px 0;">Bullish</div>
+                        <div class="level-description">Technische Indikatoren zeigen einen starken Aufwärtstrend. MACD und MA bestätigen die bullische Struktur, während der RSI noch Raum für weitere Anstiege lässt.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Content -->
+        <div class="content-area active" id="news">
+            <h2 id="news-section-title">📰 Aktuelle Krypto-News</h2>
+            
+            <!-- News Sections Toggle -->
+            <div class="news-sections-toggle">
+                <button class="section-toggle-btn active" data-section="crypto">₿ Krypto</button>
+                <button class="section-toggle-btn" data-section="stocks">📈 Aktien & Wirtschaft</button>
+            </div>
+
+            <!-- Crypto News Section -->
+            <div class="news-section active" id="cryptoNews">
+            </div>
+
+            <!-- Stocks & Economy News Section -->
+            <div class="news-section" id="stocksNews">
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="news-navigation">
+                <!-- Newer News Button -->
+                <div class="nav-button-container" id="newerNewsContainer">
+                    <button class="nav-btn newer-btn" id="newerNewsBtn">
+                        <span class="btn-icon">↑</span>
+                        <span class="btn-text">Neuere News laden</span>
+                    </button>
+                </div>
+
+                <!-- Current Date Display -->
+                <div class="current-date" id="currentDateDisplay">
+                    News vom <span id="currentNewsDate"></span>
+                </div>
+            </div>
+
+            <!-- News Loading Indicator -->
+            <div class="news-loading" id="newsLoading">
+                <div class="loading-spinner"></div>
+                <p>Lade aktuelle News...</p>
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid" id="newsGrid">
+                <!-- News werden dynamisch eingefügt -->
+            </div>
+
+            <!-- Older News Button -->
+            <div class="nav-button-container" id="olderNewsContainer">
+                <button class="nav-btn older-btn" id="olderNewsBtn">
+                    <span class="btn-text">Ältere News laden</span>
+                    <span class="btn-icon">↓</span>
+                </button>
+            </div>
+
+            <!-- News Error Message -->
+            <div class="news-error" id="newsError" style="display: none;">
+                <p>⚠️ Konnte keine News laden. Bitte später erneut versuchen.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // News initialisieren
+        initializeNewsSection();
+        
+        // TradingView Widget initialisieren
+        setTimeout(initTradingViewCharts, 1000);
+    });
+
+    // News-Funktionen
+        const maxNewsPerDay = 10;
+    let currentDate = new Date();
+        let newsCache = {
+        crypto: {},
+            stocks: {}
+        };
+            // Cache aus localStorage laden
+        function loadCache() {
+            try {
+            const savedCache = localStorage.getItem('newsCache');
+            if (savedCache) {
+                    Object.assign(newsCache, JSON.parse(savedCache));
+            }
+        } catch (error) {
+            console.error('Fehler beim Laden des Cache:', error);
+        }
+        }
+        loadCache();
+
+        // News-Quellen und URLs
+        const NEWS_SOURCES = ['CoinDesk', 'Cointelegraph', 'Bitcoin.de', 'BTC-ECHO', 'CryptoNews'];
+        const NEWS_URLS = {
+            'bitcoin': [
+                'https://www.btc-echo.de/news/bitcoin/',
+                'https://www.coindesk.com/price/bitcoin',
+                'https://cointelegraph.com/bitcoin-news',
+                'https://bitcoin.de/de/news'
+            ],
+            'market': [
+                'https://www.btc-echo.de/news/markt/',
+                'https://www.coindesk.com/markets',
+                'https://cointelegraph.com/markets',
+                'https://bitcoin.de/de/charts'
+            ],
+            'regulation': [
+                'https://www.btc-echo.de/news/regulierung/',
+                'https://www.coindesk.com/policy',
+                'https://cointelegraph.com/regulation-news',
+                'https://bitcoin.de/de/news'
+            ]
+        };
+
+        // Zufällige News-Quelle auswählen
+        function getRandomSource() {
+            return NEWS_SOURCES[Math.floor(Math.random() * NEWS_SOURCES.length)];
+        }
+
+        // Zufällige News-URL für eine Kategorie auswählen
+        function getRandomNewsUrl(category) {
+            const categoryUrls = NEWS_URLS[category] || NEWS_URLS['bitcoin'];
+            return categoryUrls[Math.floor(Math.random() * categoryUrls.length)];
+        }
+
+        // News aus dem Cache laden oder generieren
+        async function fetchNewsForDate(section, date) {
+            const dateKey = date.toISOString().split('T')[0];
+            
+            // Prüfen ob News bereits im Cache sind
+            if (newsCache[section][dateKey]) {
+                return newsCache[section][dateKey];
+            }
+
+            // Test-News generieren
+            const news = generateMockNewsForDate(date, section);
+            
+            // News im Cache speichern
+            if (!newsCache[section][dateKey]) {
+                newsCache[section][dateKey] = news;
+            }
+            
+            return news;
+        }
+
+        // News anzeigen
+        function displayNews(news) {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = news.map(item => `
+                <div class="news-card ${item.importance || ''} ${item.category || ''}">
+                    ${item.importance === 'high' ? '<div class="breaking-news">Breaking News</div>' : ''}
+                    <div class="news-meta">
+                        <div class="news-date">${item.date}</div>
+                        <div class="news-source-tag">${item.source}</div>
+                    </div>
+                    <div class="news-title">${item.title}</div>
+                    <div class="news-excerpt">${item.excerpt}</div>
+                    <div class="news-footer">
+                        <a href="${item.url}" class="read-more-btn" target="_blank">
+                            Artikel lesen
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        ${item.sentiment ? `
+                            <div class="sentiment-indicator" title="Marktstimmung">
+                                ${getSentimentEmoji(item.sentiment)}
+                                ${(item.sentiment * 100).toFixed(0)}%
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+        // Initial News laden
+        async function loadInitialNews() {
+            try {
+                const activeSection = document.querySelector('.section-toggle-btn.active').dataset.section;
+                const news = await fetchNewsForDate(activeSection, currentDate);
+                displayNews(news);
+            } catch (error) {
+                console.error('Fehler beim Laden der initialen News:', error);
+            }
+        }
+        // Kategorie aus Tags oder Inhalt bestimmen
+        const getCategoryFromTags = (tags = '') => {
+            const lowerTags = String(tags).toLowerCase();
+                if (lowerTags.includes('bitcoin') || lowerTags.includes('btc')) return 'bitcoin';
+                if (lowerTags.includes('market') || lowerTags.includes('trading')) return 'market';
+                if (lowerTags.includes('regulation') || lowerTags.includes('law')) return 'regulation';
+                return 'all';
+        };
+
+        const getCategoryFromContent = (content = '') => {
+            const lower = String(content).toLowerCase();
+                if (lower.includes('aktie') || lower.includes('börse')) return 'stocks';
+                if (lower.includes('wirtschaft') || lower.includes('konjunktur')) return 'economy';
+                if (lower.includes('unternehmen') || lower.includes('firma')) return 'companies';
+                return 'all';
+        };
+
+        async function loadNews(loadPreviousDay = false) {
+            const newsGrid = document.getElementById('newsGrid');
+            const newsLoading = document.getElementById('newsLoading');
+            const newsError = document.getElementById('newsError');
+            const currentSection = document.querySelector('.section-toggle-btn.active').dataset.section;
+            
+            try {
+                // Loading-Status anzeigen
+                newsLoading.style.display = 'block';
+                newsError.style.display = 'none';
+                newsGrid.style.display = 'none';
+                newsGrid.classList.remove('loaded');
+
+                if (loadPreviousDay) {
+                    currentDate.setDate(currentDate.getDate() - 1);
+                }
+
+                // News von der API oder aus dem Cache laden
+                const news = await fetchNewsForDate(currentSection, currentDate);
+                
+                // News anzeigen
+                displayNews(news);
+                
+                // Loading-Status ausblenden
+                newsLoading.style.display = 'none';
+                newsGrid.style.display = 'grid';
+                
+                // Kurze Verzögerung für Animation
+                setTimeout(() => {
+                newsGrid.classList.add('loaded');
+                }, 100);
+
+                // Navigation-Buttons aktualisieren
+                updateNavigationButtons();
+            } catch (error) {
+                console.error('Fehler beim Laden der News:', error);
+                newsLoading.style.display = 'none';
+                newsError.style.display = 'block';
+                newsGrid.style.display = 'none';
+            }
+        }
+
+        // Event Listener für Section Toggle und Navigation
+        function initializeNewsSection() {
+            const sectionToggleBtns = document.querySelectorAll('.section-toggle-btn');
+            const newerNewsBtn = document.getElementById('newerNewsBtn');
+            const olderNewsBtn = document.getElementById('olderNewsBtn');
+
+            // Section Toggle Event Listener
+            sectionToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    sectionToggleBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Sections umschalten
+                    document.querySelectorAll('.news-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(this.dataset.section + 'News').classList.add('active');
+                    
+                    // Überschrift aktualisieren
+                    const newsTitle = document.getElementById('news-section-title');
+                    if (this.dataset.section === 'crypto') {
+                        newsTitle.textContent = '📰 Aktuelle Krypto-News';
+                    } else {
+                        newsTitle.textContent = '📰 Aktuelle Aktien & Wirtschafts-News';
+                    }
+                    
+                    // News neu laden
+                    currentDate = new Date(); // Reset auf aktuelles Datum
+                    loadNews(false);
+                });
+            });
+
+            // Navigation Buttons Event Listener
+            if (newerNewsBtn) {
+                newerNewsBtn.addEventListener('click', () => {
+                    newerNewsBtn.classList.add('loading');
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    loadNews(false).then(() => {
+                        newerNewsBtn.classList.remove('loading');
+                        updateNavigationButtons();
+                    });
+                });
+            }
+
+            if (olderNewsBtn) {
+                olderNewsBtn.addEventListener('click', () => {
+                    olderNewsBtn.classList.add('loading');
+                    loadNews(true).then(() => {
+                        olderNewsBtn.classList.remove('loading');
+                        updateNavigationButtons();
+                    });
+                });
+            }
+
+            // News-Filter Event Listener
+            const newsFilterBtns = document.querySelectorAll('.news-filter-btn');
+            newsFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    newsFilterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    loadNews(false);
+                });
+            });
+
+            // Initial News laden
+            loadNews(false);
+            updateNavigationButtons();
+        }
+
+                // Navigation Buttons und Datum anzeigen
+        function updateNavigationButtons() {
+                const newerNewsContainer = document.getElementById('newerNewsContainer');
+                const olderNewsContainer = document.getElementById('olderNewsContainer');
+                const currentDateDisplay = document.getElementById('currentNewsDate');
+                const today = new Date();
+                const daysSinceToday = Math.floor((today - currentDate) / (1000 * 60 * 60 * 24));
+                
+                // Aktuelles Datum anzeigen
+                currentDateDisplay.textContent = currentDate.toLocaleDateString('de-DE');
+                
+                // "Neuere News" Button nur anzeigen, wenn wir nicht auf dem aktuellen Tag sind
+                if (daysSinceToday > 0) {
+                    newerNewsContainer.classList.add('visible');
+                    const newerNewsBtn = document.getElementById('newerNewsBtn');
+                    newerNewsBtn.classList.remove('loading');
+                    const nextDate = new Date(currentDate);
+                    nextDate.setDate(nextDate.getDate() + 1);
+                    newerNewsBtn.querySelector('.btn-text').textContent = 
+                        `News vom ${nextDate.toLocaleDateString('de-DE')} laden`;
+                } else {
+                    newerNewsContainer.classList.remove('visible');
+                }
+                
+                // "Ältere News" Button nur anzeigen, wenn wir nicht weiter als 7 Tage zurück sind
+                if (daysSinceToday < 7) {
+                    olderNewsContainer.classList.add('visible');
+                    const olderNewsBtn = document.getElementById('olderNewsBtn');
+                    olderNewsBtn.classList.remove('loading');
+                    const prevDate = new Date(currentDate);
+                    prevDate.setDate(prevDate.getDate() - 1);
+                    olderNewsBtn.querySelector('.btn-text').textContent = 
+                        `News vom ${prevDate.toLocaleDateString('de-DE')} laden`;
+                } else {
+                    olderNewsContainer.classList.remove('visible');
+            }
+        }
+
+        function displayNews(news) {
+            const newsGrid = document.getElementById('newsGrid');
+            
+            // Maximal 10 News pro Tag anzeigen
+            const limitedNews = news.slice(0, maxNewsPerDay);
+
+            newsGrid.innerHTML = limitedNews.map(item => `
+                <div class="news-card ${item.importance || ''}">
+                    ${item.importance === 'high' ? '<div class="breaking-news">Breaking News</div>' : ''}
+                    <div class="news-meta">
+                        <div class="news-date">${item.date}</div>
+                        <div class="news-source-tag">${item.source}</div>
+                    </div>
+                    <div class="news-title">${item.title}</div>
+                    <div class="news-excerpt">${item.excerpt}</div>
+                    <div class="news-footer">
+                        <a href="${item.url}" class="read-more-btn" target="_blank">
+                            Artikel lesen
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        ${item.sentiment ? `
+                            <div class="sentiment-indicator" title="Marktstimmung">
+                                ${getSentimentEmoji(item.sentiment)}
+                                ${(item.sentiment * 100).toFixed(0)}%
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+
+
+        const getSentimentEmoji = (sentiment) => {
+            if (!sentiment) return '↔️';
+            if (sentiment > 0.7) return '🚀';
+            if (sentiment > 0.3) return '📈';
+            if (sentiment > -0.3) return '↔️';
+            if (sentiment > -0.7) return '📉';
+            return '⚠️';
+        };
+
+
+
+        // Zufällige News-URL für eine Kategorie auswählen
+        function getRandomNewsUrl(category) {
+            const categoryUrls = NEWS_URLS[category] || NEWS_URLS['bitcoin'];
+            return categoryUrls[Math.floor(Math.random() * categoryUrls.length)];
+        }
+
+        // Zufällige News-Quelle auswählen
+        function getRandomSource() {
+            return NEWS_SOURCES[Math.floor(Math.random() * NEWS_SOURCES.length)];
+        }
+
+        // Mock-News für ein bestimmtes Datum generieren
+        function generateMockNewsForDate(date, section = 'crypto') {
+            const formattedDate = date.toLocaleDateString('de-DE');
+            const daysAgo = Math.floor((new Date() - date) / (1000 * 60 * 60 * 24));
+            
+            // Verschiedene News-Sets für verschiedene Tage
+            const cryptoTemplates = [
+                    {
+                        title: `Bitcoin erreicht ${daysAgo === 0 ? 'heute' : 'am ' + formattedDate} neues Niveau`,
+                    excerpt: `Der Bitcoin-Kurs zeigt sich ${daysAgo === 0 ? 'heute' : 'am ' + formattedDate} besonders stark und testet wichtige Widerstandszonen.`,
+                    source: 'CoinDesk',
+                    url: 'https://www.coindesk.com/markets/bitcoin/price-analysis-btc-new-levels'
+                },
+                    {
+                        title: `Kryptomarkt ${daysAgo === 0 ? 'zeigt' : 'zeigte'} gemischte Signale`,
+                    excerpt: `Die Gesamtmarktkapitalisierung ${daysAgo === 0 ? 'bewegt' : 'bewegte'} sich seitwärts, während einzelne Altcoins stark performten.`,
+                    source: 'Cointelegraph',
+                    url: 'https://cointelegraph.com/news/crypto-market-analysis-mixed-signals'
+                },
+                {
+                    title: `Ethereum ${daysAgo === 0 ? 'testet' : 'testete'} wichtige Unterstützung`,
+                    excerpt: `Der Ethereum-Kurs ${daysAgo === 0 ? 'befindet' : 'befand'} sich in einer kritischen Phase. Trader beobachten die Entwicklung genau.`,
+                    source: 'BTC-ECHO',
+                    url: 'https://www.btc-echo.de/news/ethereum-kurs-analyse-support-test'
+                },
+                    {
+                        title: `Regulatorische Updates ${daysAgo === 0 ? 'heute' : 'vom ' + formattedDate}`,
+                    excerpt: `Neue Entwicklungen im Bereich der Krypto-Regulierung ${daysAgo === 0 ? 'zeichnen' : 'zeichneten'} sich ab.`,
+                    source: 'Bitcoin.de',
+                    url: 'https://bitcoin.de/de/news/regulierung-updates'
+                }
+            ];
+
+            const stocksTemplates = [
+                {
+                    title: `EZB-Ratssitzung: ${daysAgo === 0 ? 'Zinsentscheidung im Fokus' : 'Zinsentscheidung im Rückblick'}`,
+                    excerpt: `Die Europäische Zentralbank ${daysAgo === 0 ? 'berät' : 'beriet'} über die weitere Geldpolitik. Marktteilnehmer ${daysAgo === 0 ? 'erwarten' : 'erwarteten'} wichtige Signale für den weiteren Kurs.`,
+                    source: 'FAZ',
+                    url: 'https://www.faz.net/finanzen/ezb-ratssitzung-zinsentscheidung-geldpolitik'
+                },
+                {
+                    title: `Arbeitsmarktdaten ${daysAgo === 0 ? 'überraschen' : 'überraschten'} positiv`,
+                    excerpt: `Die Beschäftigungszahlen ${daysAgo === 0 ? 'zeigen' : 'zeigten'} eine robuste Entwicklung. Ökonomen ${daysAgo === 0 ? 'sehen' : 'sahen'} darin ein positives Signal für die Konjunktur.`,
+                    source: 'Handelsblatt',
+                    url: 'https://www.handelsblatt.com/finanzen/arbeitsmarkt-beschaeftigungszahlen-analyse'
+                },
+                {
+                    title: `Tech-Aktien: Apple und Microsoft ${daysAgo === 0 ? 'führen' : 'führten'} Rally an`,
+                    excerpt: `Die großen Technologiekonzerne ${daysAgo === 0 ? 'profitieren' : 'profitierten'} von starken Quartalszahlen und positiven Analystenkommentaren.`,
+                    source: 'Der Aktionär',
+                    url: 'https://www.deraktionaer.de/artikel/aktien/tech-aktien-analyse-apple-microsoft'
+                },
+                {
+                    title: `Ölpreis ${daysAgo === 0 ? 'reagiert' : 'reagierte'} auf OPEC-Entscheidung`,
+                    excerpt: `Die Rohölmärkte ${daysAgo === 0 ? 'verarbeiten' : 'verarbeiteten'} die neuesten Förderquoten-Entscheidungen. Energieaktien ${daysAgo === 0 ? 'zeigen' : 'zeigten'} deutliche Bewegungen.`,
+                    source: 'Börse Online',
+                    url: 'https://www.boerse-online.de/nachrichten/rohstoffe/oelpreis-opec-foerderquoten'
+                },
+                {
+                    title: `Automobilsektor: Neue Absatzzahlen aus China`,
+                    excerpt: `Die aktuellen Verkaufszahlen aus dem wichtigen chinesischen Markt ${daysAgo === 0 ? 'geben' : 'gaben'} wichtige Impulse für deutsche Autobauer.`,
+                    source: 'Manager Magazin',
+                    url: 'https://www.manager-magazin.de/unternehmen/autoindustrie/china-absatzzahlen-analyse'
+                },
+                {
+                    title: `Fed-Protokoll ${daysAgo === 0 ? 'gibt' : 'gab'} Einblick in Geldpolitik`,
+                    excerpt: `Die Mitschrift der letzten Notenbanksitzung ${daysAgo === 0 ? 'zeigt' : 'zeigte'} die Diskussion über künftige Zinsschritte. Anleger ${daysAgo === 0 ? 'analysieren' : 'analysierten'} die Details genau.`,
+                    source: 'Börsen-Zeitung',
+                    url: 'https://www.boersen-zeitung.de/geldpolitik/fed-protokoll-zinsentscheidung'
+                },
+                {
+                    title: `DAX-Konzerne: Dividendensaison ${daysAgo === 0 ? 'nimmt' : 'nahm'} Fahrt auf`,
+                    excerpt: `Die Ausschüttungen der deutschen Großunternehmen ${daysAgo === 0 ? 'erreichen' : 'erreichten'} neue Rekordwerte. Anleger ${daysAgo === 0 ? 'können' : 'konnten'} sich über hohe Renditen freuen.`,
+                    source: 'finanzen.net',
+                    url: 'https://www.finanzen.net/nachricht/aktien/dax-dividenden-analyse'
+                },
+                {
+                    title: `Immobilienmarkt: Zinswende ${daysAgo === 0 ? 'zeigt' : 'zeigte'} Wirkung`,
+                    excerpt: `Die veränderten Finanzierungsbedingungen ${daysAgo === 0 ? 'beeinflussen' : 'beeinflussten'} den Immobiliensektor deutlich. Experten ${daysAgo === 0 ? 'erwarten' : 'erwarteten'} Anpassungen am Markt.`,
+                    source: 'Wirtschaftswoche',
+                    url: 'https://www.wiwo.de/finanzen/immobilien/zinswende-auswirkungen-analyse'
+                }
+            ];
+
+            const templates = section === 'crypto' ? cryptoTemplates : stocksTemplates;
+
+            // News mit Datum versehen
+            const news = templates.map(template => ({
+                ...template,
+                date: formattedDate
+            }));
+
+            // Zufällige Reihenfolge
+            return news.sort(() => Math.random() - 0.5);
+        }
+
+        // Tab Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab Navigation Event Listener
+            const navTabs = document.querySelectorAll('.nav-tab');
+            const contentAreas = document.querySelectorAll('.content-area');
+            const cryptoNav = document.getElementById('cryptoNav');
+            const stocksNav = document.getElementById('stocksNav');
+            const altcoinsNav = document.getElementById('altcoinsNav');
+            const bitcoinContainer = document.querySelector('.bitcoin-container');
+            const altcoinsContainer = document.querySelector('.altcoins-container');
+
+            // Altcoins Navigation
+            const altcoinButtons = document.querySelectorAll('[data-altcoin]');
+            const altcoinSections = document.querySelectorAll('.altcoin-section');
+
+            altcoinButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const altcoin = this.dataset.altcoin;
+                    
+                    // Aktive Klasse von allen Buttons entfernen
+                    altcoinButtons.forEach(btn => btn.classList.remove('active'));
+                    // Aktive Klasse zum geklickten Button hinzufügen
+                    this.classList.add('active');
+                    
+                    // Alle Sections ausblenden
+                    altcoinSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Gewählte Section anzeigen
+                    const selectedSection = document.querySelector(`.${altcoin}-section`);
+                    if (selectedSection) {
+                        selectedSection.style.display = 'block';
+                    }
+                });
+            });
+
+            // Bitcoin/Altcoins Navigation
+            const cryptoButtons = document.querySelectorAll('[data-subtab]');
+            const bitcoinTradingInfo = document.getElementById('bitcoin-trading-info');
+            
+            cryptoButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const subtab = this.dataset.subtab;
+                    
+                    // Aktive Klasse von allen Buttons entfernen
+                    cryptoButtons.forEach(btn => btn.classList.remove('active'));
+                    // Aktive Klasse zum geklickten Button hinzufügen
+                    this.classList.add('active');
+                    
+                    // Container anzeigen/ausblenden
+                    if (subtab === 'bitcoin') {
+                        bitcoinContainer.style.display = 'block';
+                        altcoinsContainer.style.display = 'none';
+                        altcoinsNav.style.display = 'none';
+                        bitcoinTradingInfo.style.display = 'block';
+                    } else if (subtab === 'altcoins') {
+                        bitcoinContainer.style.display = 'none';
+                        altcoinsContainer.style.display = 'block';
+                        altcoinsNav.style.display = 'block';
+                        bitcoinTradingInfo.style.display = 'none';
+                    }
+                });
+            });
+
+            // Haupt-Navigation
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Aktiven Tab aktualisieren
+                    navTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Content Areas aktualisieren
+                    const targetId = this.getAttribute('data-tab');
+                    contentAreas.forEach(area => {
+                        area.classList.remove('active');
+                        if (area.id === targetId) {
+                            area.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Haupt-Analyse-Tabs Event Listener
+            const mainAnalysisBtns = document.querySelectorAll('.analysis-nav-btn.main');
+            mainAnalysisBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    mainAnalysisBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    handleMainTabChange(this.getAttribute('data-maintab'));
+                });
+            });
+
+            // Funktion zum Umschalten der Sub-Tabs
+            function handleMainTabChange(mainTab) {
+                if (mainTab === 'crypto') {
+                    cryptoNav.classList.add('show');
+                    stocksNav.classList.remove('show');
+                    // Aktiviere den ersten Crypto-Tab, wenn keiner aktiv ist
+                    if (!cryptoNav.querySelector('.analysis-nav-btn.active')) {
+                        cryptoNav.querySelector('.analysis-nav-btn').classList.add('active');
+                    }
+                } else {
+                    stocksNav.classList.add('show');
+                    cryptoNav.classList.remove('show');
+                    // Aktiviere den ersten Stocks-Tab, wenn keiner aktiv ist
+                    if (!stocksNav.querySelector('.analysis-nav-btn.active')) {
+                        stocksNav.querySelector('.analysis-nav-btn').classList.add('active');
+                    }
+                }
+            }
+
+            // Sub-Tabs Event Listener
+            const subNavBtns = document.querySelectorAll('.analysis-nav-btn.sub');
+            subNavBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Nur die Buttons in der gleichen Gruppe deaktivieren
+                    const parentGroup = this.closest('.analysis-nav-group');
+                    parentGroup.querySelectorAll('.analysis-nav-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Chart View Toggle
+            const chartToggleBtns = document.querySelectorAll('.chart-toggle-btn');
+            const liveChartView = document.getElementById('live-chart-view');
+            const screenshotView = document.getElementById('screenshot-view');
+
+            chartToggleBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Toggle Button Aktivierung
+                    chartToggleBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const targetView = this.getAttribute('data-view');
+                    
+                    // Chart Views umschalten
+                    const screenshotInfo = document.getElementById('screenshot-info');
+                    const liveInfo = document.getElementById('live-info');
+
+                    if (targetView === 'live') {
+                        liveChartView.style.display = 'block';
+                        screenshotView.style.display = 'none';
+                        screenshotInfo.style.display = 'none';
+                        liveInfo.style.display = 'block';
+                        // TradingView Widget neu initialisieren
+                        initTradingViewCharts();
+                    } else {
+                        liveChartView.style.display = 'none';
+                        screenshotView.style.display = 'block';
+                        screenshotInfo.style.display = 'grid';
+                        liveInfo.style.display = 'none';
+                    }
+                });
+            });
+
+            // News-Sektion initialisieren
+            initializeNewsSection();
+            
+            // TradingView Widget initialisieren
+            setTimeout(initTradingViewCharts, 1000);
+        });
+
+        // Responsive Navigation
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav-tabs');
+            nav.classList.toggle('mobile-active');
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                // Tab Navigation mit Keyboard
+                const activeTab = document.querySelector('.nav-tab.active');
+                if (activeTab) {
+                    activeTab.focus();
+                }
+            }
+        });
+
+        // Performance Optimierung
+        let ticking = false;
+        function updateAnimations() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    // Animation Updates hier
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        // Scroll Event Listener
+        window.addEventListener('scroll', updateAnimations);
+    </script>
+    <script>
+        // TradingView Charts mit deinen Trading-Einstellungen initialisieren
+        function initTradingViewCharts() {
+            const chartContainer = document.getElementById('tradingview_btc_chart');
+            // Container leeren, um Widget neu zu initialisieren
+            chartContainer.innerHTML = '';
+            
+            // Bitcoin Chart - Dein mittelfristiges Setup (1T)
+            new TradingView.widget({
+                "autosize": true,
+                "symbol": "BINANCE:BTCUSDT",
+                "interval": "D",
+                "timezone": "Europe/Berlin",
+                "theme": "dark",
+                "style": "1",
+                "locale": "de_DE",
+                "toolbar_bg": "#1a1a1a",
+                "enable_publishing": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": false,
+                "studies": [
+                    {
+                        "id": "MASimple@tv-basicstudies",
+                        "inputs": {
+                            "length": 20,
+                            "source": "close"
+                        }
+                    },
+                    {
+                        "id": "MACD@tv-basicstudies"
+                    },
+                    {
+                        "id": "RSI@tv-basicstudies"
+                    }
+                ],
+                "container_id": "tradingview_btc_chart",
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "backgroundColor": "#1a1a1a",
+                "gridColor": "#242424",
+                "studies_overrides": {
+                    "moving average.20.color": "#00ff88",
+                    "moving average.20.linewidth": 2,
+                    "volume.volume.color.0": "#ff475755",
+                    "volume.volume.color.1": "#00ff8855",
+                    "bollinger bands.upper.linewidth": 1,
+                    "bollinger bands.lower.linewidth": 1,
+                    "bollinger bands.basis.linewidth": 1,
+                    "macd.macd.color": "#00ff88",
+                    "macd.signal.color": "#ff4757"
+                },
+                "loading_screen": { "backgroundColor": "#1a1a1a" },
+                "overrides": {
+                    "paneProperties.background": "#1a1a1a",
+                    "paneProperties.vertGridProperties.color": "#242424",
+                    "paneProperties.horzGridProperties.color": "#242424",
+                    "scalesProperties.textColor": "#AAA",
+                    "mainSeriesProperties.candleStyle.upColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.downColor": "#ff4757",
+                    "mainSeriesProperties.candleStyle.wickUpColor": "#00ff88",
+                    "mainSeriesProperties.candleStyle.wickDownColor": "#ff4757"
+                }
+            });
+
+            // Altcoins Chart - Ethereum mit ähnlichen Einstellungen
+            new TradingView.widget({
+                "width": "100%",
+                "height": "500",
+                "symbol": "BINANCE:ETHUSDT",
+                "interval": "1D",
+                "timezone": "Europe/Berlin",
+                "theme": "dark",
+                "style": "1",
+                "locale": "de_DE",
+                "toolbar_bg": "#1a1a1a",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_legend": false,
+                "save_image": false,
+                "container_id": "tradingview_altcoins_chart",
+                "studies": [
+                    "MAExp@tv-basicstudies-9", // 9-Perioden MA
+                    "MAExp@tv-basicstudies-21", // 21-Perioden MA
+                    "RSI@tv-basicstudies",
+                    "Volume@tv-basicstudies"
+                ]
+            });
+
+            // Live-Daten nach Chart-Initialisierung laden
+            setTimeout(() => {
+                loadLiveData();
+                // Alle 30 Sekunden aktualisieren
+                setInterval(() => {
+                    console.log('Aktualisiere Live-Daten...');
+                    loadLiveData();
+                }, 30000);
+                
+                // Chart Slider initialisieren
+                initChartSlider();
+            }, 2000);
+        }
+
+        // Charts nach DOM-Load initialisieren
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 DOM geladen, starte TradingView Charts...');
+            // Verzögerung für TradingView Script
+            setTimeout(initTradingViewCharts, 1000);
+        });
+
+        // Chart-Status überwachen
+        function checkChartStatus() {
+            const chartContainer = document.getElementById('tradingview_btc_chart');
+            if (chartContainer) {
+                const chartElement = chartContainer.querySelector('.tv-chart-container');
+                if (chartElement) {
+                    console.log('✅ TradingView Chart ist geladen!');
+                    addSupportResistanceLines();
+                    return true;
+                } else {
+                    console.log('⏳ Chart lädt noch...');
+                    return false;
+                }
+            } else {
+                console.log('❌ Chart-Container nicht gefunden');
+                return false;
+            }
+        }
+
+        // Intelligente Datenladung mit Fallbacks
+        async function loadLiveData() {
+            try {
+                // Loading States aktivieren
+                setLoadingStates(true);
+                
+                // Indikatoren aktualisieren
+                updateTechnicalIndicators();
+                
+                // Verwende direkt Mock-Daten für bessere Performance
+                await loadAlternativeData();
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Daten:', error);
+                setFallbackData();
+            } finally {
+                setLoadingStates(false);
+            }
+        }
+
+        // Technische Indikatoren aktualisieren
+        function updateTechnicalIndicators() {
+            // EMA Kreuzungen
+            const ema9Value = document.getElementById('ema9-value');
+            const ema21Value = document.getElementById('ema21-value');
+            const emaAnalysis = document.getElementById('ema-analysis');
+            
+            const ema9 = 119250; // Beispielwert
+            const ema21 = 118800; // Beispielwert
+            
+            ema9Value.textContent = '$' + ema9.toLocaleString();
+            ema21Value.textContent = '$' + ema21.toLocaleString();
+            
+            if (ema9 > ema21) {
+                emaAnalysis.textContent = '🚀 Bullishes Kreuzungsmuster: EMA 9 über EMA 21 deutet auf kurzfristigen Aufwärtstrend hin.';
+                emaAnalysis.style.color = '#00ff88';
+            } else {
+                emaAnalysis.textContent = '📉 Bearishes Kreuzungsmuster: EMA 9 unter EMA 21 deutet auf mögliche Korrektur hin.';
+                emaAnalysis.style.color = '#ff4757';
+            }
+
+            // RSI
+            const rsiValue = document.getElementById('rsi-value');
+            const rsiAnalysis = document.getElementById('rsi-analysis');
+            
+            const rsi = 65; // Beispielwert
+            
+            rsiValue.textContent = rsi.toFixed(2);
+            
+            if (rsi > 70) {
+                rsiAnalysis.textContent = '⚠️ Überkauft: RSI über 70 deutet auf mögliche Korrektur hin.';
+                rsiAnalysis.style.color = '#ff4757';
+            } else if (rsi < 30) {
+                rsiAnalysis.textContent = '💡 Überverkauft: RSI unter 30 bietet potenzielle Kaufgelegenheit.';
+                rsiAnalysis.style.color = '#00ff88';
+            } else {
+                rsiAnalysis.textContent = '✅ Neutraler Bereich: RSI zwischen 30 und 70 zeigt ausgeglichenes Momentum.';
+                rsiAnalysis.style.color = '#ffa502';
+            }
+
+            // MACD
+            const macdValue = document.getElementById('macd-value');
+            const macdAnalysis = document.getElementById('macd-analysis');
+            
+            const macd = 250; // Beispielwert
+            const signal = 150; // Beispielwert
+            
+            macdValue.innerHTML = `MACD: <span style="color: #00ff88">$${macd}</span><br>Signal: <span style="color: #ff4757">$${signal}</span>`;
+            
+            if (macd > signal) {
+                macdAnalysis.textContent = '🚀 Bullishes Signal: MACD über Signallinie bestätigt Aufwärtstrend.';
+                macdAnalysis.style.color = '#00ff88';
+            } else {
+                macdAnalysis.textContent = '📉 Bearishes Signal: MACD unter Signallinie deutet auf Abwärtstrend hin.';
+                macdAnalysis.style.color = '#ff4757';
+            }
+
+            // Bollinger Bänder
+            const bbValue = document.getElementById('bb-value');
+            const bbAnalysis = document.getElementById('bb-analysis');
+            
+            const currentPrice = 119000; // Beispielwert
+            const upperBand = 122000; // Beispielwert
+            const lowerBand = 116000; // Beispielwert
+            
+            bbValue.innerHTML = `Oberes Band: <span style="color: #ff4757">$${upperBand.toLocaleString()}</span><br>` +
+                              `Unteres Band: <span style="color: #00ff88">$${lowerBand.toLocaleString()}</span>`;
+            
+            const bandwidth = ((upperBand - lowerBand) / ((upperBand + lowerBand) / 2)) * 100;
+            
+            if (currentPrice > upperBand) {
+                bbAnalysis.textContent = '⚠️ Preis über oberem Band: Mögliche Überkauft-Situation.';
+                bbAnalysis.style.color = '#ff4757';
+            } else if (currentPrice < lowerBand) {
+                bbAnalysis.textContent = '💡 Preis unter unterem Band: Potenzielle Kaufgelegenheit.';
+                bbAnalysis.style.color = '#00ff88';
+            } else {
+                bbAnalysis.textContent = `✅ Preis innerhalb der Bänder. Volatilität: ${bandwidth.toFixed(2)}%`;
+                bbAnalysis.style.color = '#ffa502';
+            }
+        }
+
+                // Alternative Datenquelle mit deinen echten Trading-Levels
+        async function loadAlternativeData() {
+            try {
+                console.log('🔄 Lade alternative Datenquelle mit deinen Trading-Levels...');
+
+                // Simulierte Verzögerung für realistische Ladezeit
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                // Realistische Mock-Daten basierend auf deinen Trading-Levels
+                const btcMockData = {
+                    usd: 119000 + Math.random() * 4000 - 2000, // $119,000 ± $2,000 (um deinen aktuellen Chart-Preis)
+                    usd_24h_change: Math.random() * 6 - 3, // -3% bis +3% (als Zahl)
+                    usd_24h_vol: 25000000000 + Math.random() * 10000000000 // $25B ± $10B
+                };
+
+                const ethMockData = {
+                    usd: 2850 + Math.random() * 200 - 100, // $2,850 ± $100
+                    usd_24h_change: Math.random() * 8 - 4, // -4% bis +4% (als Zahl)
+                    usd_24h_vol: 15000000000 + Math.random() * 8000000000 // $15B ± $8B
+                };
+
+                // Intelligente Mock-Preishistorie für technische Analyse
+                const generateMockPriceHistory = (basePrice, volatility, trend) => {
+                    const history = [];
+                    let currentPrice = basePrice;
+                    const now = Date.now();
+                    
+                    for (let i = 13; i >= 0; i--) {
+                        const timestamp = now - (i * 24 * 60 * 60 * 1000);
+                        
+                        // Trend-basierte Preisbewegung + Zufälligkeit
+                        const trendComponent = trend * (i / 13); // Trend wird stärker je näher an heute
+                        const randomComponent = (Math.random() - 0.5) * volatility;
+                        const change = (trendComponent + randomComponent) * currentPrice;
+                        
+                        currentPrice = Math.max(currentPrice + change, basePrice * 0.7);
+                        history.push([timestamp, currentPrice]);
+                    }
+                    return history;
+                };
+
+                // Verschiedene Trends für Bitcoin und Ethereum
+                const btcTrend = (Math.random() - 0.5) * 0.1; // Leichter Auf- oder Abwärtstrend
+                const ethTrend = (Math.random() - 0.5) * 0.08; // Etwas weniger volatil
+                
+                const btcPriceHistory = generateMockPriceHistory(43250, 0.03, btcTrend);
+                const ethPriceHistory = generateMockPriceHistory(2850, 0.04, ethTrend);
+
+                // Statistiken mit technischer Analyse aktualisieren
+                updateBitcoinStats(btcMockData, btcPriceHistory);
+                updateAltcoinStats(ethMockData, ethPriceHistory);
+
+                console.log('✅ Alternative Daten erfolgreich geladen (Mock-Daten)');
+                console.log('📊 Bitcoin:', btcMockData);
+                console.log('📊 Ethereum:', ethMockData);
+                
+            } catch (error) {
+                console.error('❌ Fehler bei alternativen Daten:', error);
+                setFallbackData();
+            }
+        }
+
+        // Bitcoin Statistiken mit deiner Trading-Strategie aktualisieren
+        function updateBitcoinStats(btcData, priceHistory) {
+            const price = document.getElementById('btc-price');
+            const change = document.getElementById('btc-change');
+            const trend = document.getElementById('btc-trend');
+            const target = document.getElementById('btc-target');
+
+            if (price) price.textContent = `$${btcData.usd.toLocaleString()}`;
+            if (change) {
+                const changeValue = btcData.usd_24h_change;
+                const changeText = changeValue >= 0 ? `+${changeValue.toFixed(2)}%` : `${changeValue.toFixed(2)}%`;
+                change.textContent = changeText;
+                change.style.color = changeValue >= 0 ? '#00ff88' : '#ff4757';
+            }
+            if (trend) {
+                // Deine Trading-Strategie: MA Cross 9/21 + Support/Resistance
+                const sentiment = calculateTechnicalSentiment(priceHistory, btcData.usd);
+                
+                // Zusätzliche Analyse basierend auf deinem Setup
+                let customSentiment = sentiment;
+                if (btcData.usd > 121100) {
+                    customSentiment = { text: "🚀 Breakout über 121.100$", color: "#00ff88" };
+                } else if (btcData.usd < 98300) {
+                    customSentiment = { text: "⚠️ Test der 98.300$ Unterstützung", color: "#ffaa00" };
+                } else if (btcData.usd < 78250) {
+                    customSentiment = { text: "🔴 Kritische Unterstützung 78.250$", color: "#ff4444" };
+                } else if (btcData.usd >= 55000 && btcData.usd <= 76377) {
+                    customSentiment = { text: "🎯 Zielbereich erreicht (55.000$ - 76.377$)", color: "#0088ff" };
+                } else if (btcData.usd < 73500) {
+                    customSentiment = { text: "🚨 Kritische Unterstützung bei 73.500$", color: "#8b0000" };
+                }
+                
+                trend.textContent = customSentiment.text;
+                trend.style.color = customSentiment.color;
+            }
+            if (target) {
+                // Deine spezifischen Support/Resistance Levels
+                const targetLevels = calculateTechnicalTargets(priceHistory, btcData.usd);
+                
+                // Deine Trading-Ziele basierend auf dem Chart
+                let customTarget = targetLevels;
+                if (btcData.usd > 121100) {
+                    customTarget = { nextTarget: "Nächstes Ziel: 130.000$", color: "#00ff88" };
+                } else if (btcData.usd < 98300) {
+                    customTarget = { nextTarget: "Unterstützung: 78.250$", color: "#ffaa00" };
+                } else if (btcData.usd < 78250) {
+                    customTarget = { nextTarget: "Kritischer Bereich: 73.500$", color: "#ff4444" };
+                } else if (btcData.usd >= 55000 && btcData.usd <= 76377) {
+                    customTarget = { nextTarget: "Zielbereich: 55.000$ - 76.377$", color: "#0088ff" };
+                } else if (btcData.usd < 73500) {
+                    customTarget = { nextTarget: "Kritische Unterstützung: 55.000$", color: "#8b0000" };
+                }
+                
+                target.textContent = customTarget.nextTarget;
+                target.style.color = customTarget.color;
+            }
+        }
+
+        // Altcoin Statistiken aktualisieren
+        function updateAltcoinStats(ethData, priceHistory) {
+            const price = document.getElementById('alt-price');
+            const change = document.getElementById('alt-change');
+            const trend = document.getElementById('alt-trend');
+            const volume = document.getElementById('alt-volume');
+            const trendIndicator = document.getElementById('alt-trend-indicator');
+
+            if (price) price.textContent = `$${ethData.usd.toLocaleString()}`;
+            if (change) {
+                const changeValue = ethData.usd_24h_change;
+                const changeText = changeValue >= 0 ? `+${changeValue.toFixed(2)}%` : `${changeValue.toFixed(2)}%`;
+                change.textContent = changeText;
+                change.style.color = changeValue >= 0 ? '#00ff88' : '#ff4757';
+            }
+            if (trend) {
+                // Professionelle Sentiment-Analyse basierend auf technischen Indikatoren
+                const sentiment = calculateTechnicalSentiment(priceHistory, ethData.usd);
+                trend.textContent = sentiment.text;
+                trend.style.color = sentiment.color;
+                
+                // Trend-Indikator aktualisieren
+                if (trendIndicator) {
+                    if (sentiment.sentiment === 'bullish') {
+                        trendIndicator.className = 'trend-indicator trend-bullish';
+                    } else if (sentiment.sentiment === 'bearish') {
+                        trendIndicator.className = 'trend-indicator trend-bearish';
+                    } else {
+                        trendIndicator.className = 'trend-indicator trend-neutral';
+                    }
+                }
+            }
+            if (volume) {
+                const volumeInBillions = (ethData.usd_24h_vol / 1000000000).toFixed(2);
+                volume.textContent = `$${volumeInBillions}B`;
+            }
+        }
+
+        // Loading States verwalten
+        function setLoadingStates(loading) {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                if (loading) {
+                    stat.classList.add('loading');
+                } else {
+                    stat.classList.remove('loading');
+                }
+            });
+        }
+
+        // Chart Screenshot Slider - Interaktive Anzeige deiner Chart-Screenshots
+        function initChartSlider() {
+            console.log('📊 Chart Screenshot Slider initialisiert');
+            
+            const screenshotSlides = document.querySelectorAll('.screenshot-slide');
+            const screenshotContents = document.querySelectorAll('.screenshot-content');
+            
+            screenshotSlides.forEach(slide => {
+                slide.addEventListener('click', function() {
+                    const slideType = this.getAttribute('data-slide');
+                    
+                    // Aktiven Slide aktualisieren
+                    screenshotSlides.forEach(screenshotSlide => screenshotSlide.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Screenshot-Inhalt anzeigen
+                    screenshotContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.getAttribute('data-slide') === slideType) {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    console.log('📊 Screenshot Slide ausgewählt:', slideType);
+                });
+            });
+        }
+        
+        // Bestätigung anzeigen, dass Support/Resistance Linien geladen wurden
+        function showSupportResistanceConfirmation() {
+            const confirmation = document.createElement('div');
+            confirmation.id = 'support-resistance-confirmation';
+            confirmation.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #00ff88;
+                    color: #000;
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    z-index: 10000;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    animation: slideIn 0.5s ease-out;
+                ">
+                    🎯 Deine Trading-Levels geladen!
+                    <br>121.100$ | 98.300$ | 78.250$ | 73.500$ | 55.000$
+                </div>
+            `;
+            
+            document.body.appendChild(confirmation);
+            
+            // Nach 5 Sekunden ausblenden
+            setTimeout(() => {
+                if (confirmation.parentNode) {
+                    confirmation.parentNode.removeChild(confirmation);
+                }
+            }, 5000);
+        }
+
+        // Technische Sentiment-Analyse basierend auf mehreren Indikatoren
+        function calculateTechnicalSentiment(priceHistory, currentPrice) {
+            if (!priceHistory || priceHistory.length < 14) {
+                return { text: 'Analyse lädt...', color: '#cccccc', sentiment: 'neutral' };
+            }
+
+            // Preisdaten extrahieren (CoinGecko gibt [timestamp, price] Arrays zurück)
+            const prices = priceHistory.map(p => p[1]);
+            const currentIndex = prices.length - 1;
+            
+            // 1. Moving Averages (7 und 14 Tage)
+            const ma7 = calculateMA(prices, 7);
+            const ma14 = calculateMA(prices, 14);
+            
+            // 2. RSI (Relative Strength Index)
+            const rsi = calculateRSI(prices, 14);
+            
+            // 3. Momentum (Preisänderung über verschiedene Zeiträume)
+            const momentum1d = ((currentPrice - prices[currentIndex - 1]) / prices[currentIndex - 1]) * 100;
+            const momentum7d = ((currentPrice - prices[currentIndex - 7]) / prices[currentIndex - 7]) * 100;
+            
+            // 4. Volatilität
+            const volatility = calculateVolatility(prices, 14);
+            
+            // Sentiment-Score berechnen
+            let bullishSignals = 0;
+            let bearishSignals = 0;
+            
+            // MA-Signale
+            if (currentPrice > ma7 && ma7 > ma14) bullishSignals += 2;
+            else if (currentPrice < ma7 && ma7 < ma14) bearishSignals += 2;
+            
+            // RSI-Signale
+            if (rsi < 30) bullishSignals += 2; // Überverkauft
+            else if (rsi > 70) bearishSignals += 2; // Überkauft
+            else if (rsi > 50) bullishSignals += 1; // Über der Mittellinie
+            
+            // Momentum-Signale
+            if (momentum1d > 0 && momentum7d > 0) bullishSignals += 2;
+            else if (momentum1d < 0 && momentum7d < 0) bearishSignals += 2;
+            
+            // Volatilitäts-Signale (niedrige Volatilität = stabiler Trend)
+            if (volatility < 0.05) bullishSignals += 1;
+            
+            // Sentiment bestimmen
+            if (bullishSignals > bearishSignals + 2) {
+                return { text: 'Strong Bullish 🚀', color: '#00ff88', sentiment: 'bullish' };
+            } else if (bullishSignals > bearishSignals) {
+                return { text: 'Bullish 📈', color: '#00ff88', sentiment: 'bullish' };
+            } else if (bearishSignals > bullishSignals + 2) {
+                return { text: 'Strong Bearish 📉', color: '#ff4757', sentiment: 'bearish' };
+            } else if (bearishSignals > bullishSignals) {
+                return { text: 'Bearish 📉', color: '#ff4757', sentiment: 'bearish' };
+            } else {
+                return { text: 'Neutral ⚖️', color: '#ffa502', sentiment: 'neutral' };
+            }
+        }
+
+        // Technische Unterstützungs- und Widerstandslevel berechnen
+        function calculateTechnicalTargets(priceHistory, currentPrice) {
+            if (!priceHistory || priceHistory.length < 14) {
+                return { nextTarget: 'Analyse lädt...', color: '#cccccc' };
+            }
+
+            const prices = priceHistory.map(p => p[1]);
+            
+            // Unterstützungslevel (Support) - niedrigste Preise der letzten 14 Tage
+            const supportLevels = findSupportLevels(prices);
+            const nearestSupport = supportLevels.find(level => level < currentPrice) || Math.min(...prices);
+            
+            // Widerstandslevel (Resistance) - höchste Preise der letzten 14 Tage
+            const resistanceLevels = findResistanceLevels(prices);
+            const nearestResistance = resistanceLevels.find(level => level > currentPrice) || Math.max(...prices);
+            
+            // Fibonacci Retracement Level (38.2% und 61.8%)
+            const high = Math.max(...prices);
+            const low = Math.min(...prices);
+            const fib38 = high - (high - low) * 0.382;
+            const fib61 = high - (high - low) * 0.618;
+            
+            // Nächstes Ziel bestimmen
+            let nextTarget, color;
+            if (currentPrice > fib61) {
+                // Über 61.8% - nächstes Ziel ist der Widerstand
+                nextTarget = `$${Math.round(nearestResistance).toLocaleString()}`;
+                color = '#00ff88';
+            } else if (currentPrice < fib38) {
+                // Unter 38.2% - nächstes Ziel ist der Support
+                nextTarget = `$${Math.round(nearestSupport).toLocaleString()}`;
+                color = '#ff4757';
+            } else {
+                // Zwischen 38.2% und 61.8% - nächstes Ziel ist 61.8%
+                nextTarget = `$${Math.round(fib61).toLocaleString()}`;
+                color = '#ffa502';
+            }
+            
+            return { nextTarget, color };
+        }
+
+        // Hilfsfunktionen für technische Analyse
+        function calculateMA(prices, period) {
+            const recentPrices = prices.slice(-period);
+            return recentPrices.reduce((sum, price) => sum + price, 0) / period;
+        }
+
+        function calculateRSI(prices, period) {
+            if (prices.length < period + 1) return 50;
+            
+            let gains = 0, losses = 0;
+            for (let i = prices.length - period; i < prices.length; i++) {
+                const change = prices[i] - prices[i - 1];
+                if (change > 0) gains += change;
+                else losses += Math.abs(change);
+            }
+            
+            const avgGain = gains / period;
+            const avgLoss = losses / period;
+            const rs = avgGain / avgLoss;
+            return 100 - (100 / (1 + rs));
+        }
+
+        function calculateVolatility(prices, period) {
+            const recentPrices = prices.slice(-period);
+            const mean = recentPrices.reduce((sum, price) => sum + price, 0) / period;
+            const variance = recentPrices.reduce((sum, price) => sum + Math.pow(price - mean, 2), 0) / period;
+            return Math.sqrt(variance) / mean;
+        }
+
+        function findSupportLevels(prices) {
+            const levels = [];
+            for (let i = 1; i < prices.length - 1; i++) {
+                if (prices[i] < prices[i - 1] && prices[i] < prices[i + 1]) {
+                    levels.push(prices[i]);
+                }
+            }
+            return levels.sort((a, b) => b - a); // Absteigend sortieren
+        }
+
+        function findResistanceLevels(prices) {
+            const levels = [];
+            for (let i = 1; i < prices.length - 1; i++) {
+                if (prices[i] > prices[i - 1] && prices[i] > prices[i + 1]) {
+                    levels.push(prices[i]);
+                }
+            }
+            return levels.sort((a, b) => a - b); // Aufsteigend sortieren
+        }
+
+        // Fallback-Daten bei API-Fehlern
+        function setFallbackData() {
+            const btcPrice = document.getElementById('btc-price');
+            const btcChange = document.getElementById('btc-change');
+            const btcTrend = document.getElementById('btc-trend');
+            const btcTarget = document.getElementById('btc-target');
+
+            if (btcPrice) btcPrice.textContent = '$48,250';
+            if (btcChange) btcChange.textContent = '+5.2%';
+            if (btcTrend) btcTrend.textContent = 'Bullish 🚀';
+            if (btcTarget) btcTarget.textContent = '$52,000';
+
+            const altPrice = document.getElementById('alt-price');
+            const altChange = document.getElementById('alt-change');
+            const altTrend = document.getElementById('alt-trend');
+            const altVolume = document.getElementById('alt-volume');
+
+            if (altPrice) altPrice.textContent = '$2,850';
+            if (altChange) altChange.textContent = '+3.8%';
+            if (altTrend) altTrend.textContent = 'Bullish 🚀';
+            if (altVolume) altVolume.textContent = '$12.5B';
+        }
+    </script>
+</body>
+</html>
