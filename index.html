@@ -2074,26 +2074,13 @@
         loadCache();
 
         // News-Quellen und URLs
-        const NEWS_SOURCES = ['CoinDesk', 'Cointelegraph', 'Bitcoin.de', 'BTC-ECHO', 'CryptoNews'];
-        const NEWS_URLS = {
-            'bitcoin': [
-                'https://www.btc-echo.de/news/bitcoin/',
-                'https://www.coindesk.com/price/bitcoin',
-                'https://cointelegraph.com/bitcoin-news',
-                'https://bitcoin.de/de/news'
-            ],
-            'market': [
-                'https://www.btc-echo.de/news/markt/',
-                'https://www.coindesk.com/markets',
-                'https://cointelegraph.com/markets',
-                'https://bitcoin.de/de/charts'
-            ],
-            'regulation': [
-                'https://www.btc-echo.de/news/regulierung/',
-                'https://www.coindesk.com/policy',
-                'https://cointelegraph.com/regulation-news',
-                'https://bitcoin.de/de/news'
-            ]
+        const NEWS_SOURCES = ['CoinDesk', 'Cointelegraph', 'BTC-ECHO', 'Bitcoin.de', 'CryptoNews'];
+        const NEWS_SOURCE_URLS = {
+            'CoinDesk': 'https://www.coindesk.com',
+            'Cointelegraph': 'https://cointelegraph.com',
+            'BTC-ECHO': 'https://www.btc-echo.de',
+            'Bitcoin.de': 'https://bitcoin.de',
+            'CryptoNews': 'https://cryptonews.com'
         };
 
         // Zufällige News-Quelle auswählen
@@ -2101,10 +2088,9 @@
             return NEWS_SOURCES[Math.floor(Math.random() * NEWS_SOURCES.length)];
         }
 
-        // Zufällige News-URL für eine Kategorie auswählen
-        function getRandomNewsUrl(category) {
-            const categoryUrls = NEWS_URLS[category] || NEWS_URLS['bitcoin'];
-            return categoryUrls[Math.floor(Math.random() * categoryUrls.length)];
+        // URL für eine News-Quelle abrufen
+        function getNewsSourceUrl(source) {
+            return NEWS_SOURCE_URLS[source] || 'https://www.coindesk.com';
         }
 
         // News aus dem Cache laden oder generieren
@@ -2141,7 +2127,7 @@
                     <div class="news-excerpt">${item.excerpt}</div>
                     <div class="news-footer">
                         <a href="${item.url}" class="read-more-btn" target="_blank">
-                            Artikel lesen
+                            Zur Quelle
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -2351,7 +2337,7 @@
                     <div class="news-excerpt">${item.excerpt}</div>
                     <div class="news-footer">
                         <a href="${item.url}" class="read-more-btn" target="_blank">
-                            Artikel lesen
+                            Zur Quelle
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -2404,25 +2390,25 @@
                         title: `Bitcoin erreicht ${daysAgo === 0 ? 'heute' : 'am ' + formattedDate} neues Niveau`,
                     excerpt: `Der Bitcoin-Kurs zeigt sich ${daysAgo === 0 ? 'heute' : 'am ' + formattedDate} besonders stark und testet wichtige Widerstandszonen.`,
                     source: 'CoinDesk',
-                    url: 'https://www.coindesk.com/markets/bitcoin/price-analysis-btc-new-levels'
+                    url: getNewsSourceUrl('CoinDesk')
                 },
                     {
                         title: `Kryptomarkt ${daysAgo === 0 ? 'zeigt' : 'zeigte'} gemischte Signale`,
                     excerpt: `Die Gesamtmarktkapitalisierung ${daysAgo === 0 ? 'bewegt' : 'bewegte'} sich seitwärts, während einzelne Altcoins stark performten.`,
                     source: 'Cointelegraph',
-                    url: 'https://cointelegraph.com/news/crypto-market-analysis-mixed-signals'
+                    url: getNewsSourceUrl('Cointelegraph')
                 },
                 {
                     title: `Ethereum ${daysAgo === 0 ? 'testet' : 'testete'} wichtige Unterstützung`,
                     excerpt: `Der Ethereum-Kurs ${daysAgo === 0 ? 'befindet' : 'befand'} sich in einer kritischen Phase. Trader beobachten die Entwicklung genau.`,
                     source: 'BTC-ECHO',
-                    url: 'https://www.btc-echo.de/news/ethereum-kurs-analyse-support-test'
+                    url: getNewsSourceUrl('BTC-ECHO')
                 },
                     {
                         title: `Regulatorische Updates ${daysAgo === 0 ? 'heute' : 'vom ' + formattedDate}`,
                     excerpt: `Neue Entwicklungen im Bereich der Krypto-Regulierung ${daysAgo === 0 ? 'zeichnen' : 'zeichneten'} sich ab.`,
                     source: 'Bitcoin.de',
-                    url: 'https://bitcoin.de/de/news/regulierung-updates'
+                    url: getNewsSourceUrl('Bitcoin.de')
                 }
             ];
 
@@ -2431,49 +2417,49 @@
                     title: `EZB-Ratssitzung: ${daysAgo === 0 ? 'Zinsentscheidung im Fokus' : 'Zinsentscheidung im Rückblick'}`,
                     excerpt: `Die Europäische Zentralbank ${daysAgo === 0 ? 'berät' : 'beriet'} über die weitere Geldpolitik. Marktteilnehmer ${daysAgo === 0 ? 'erwarten' : 'erwarteten'} wichtige Signale für den weiteren Kurs.`,
                     source: 'FAZ',
-                    url: 'https://www.faz.net/finanzen/ezb-ratssitzung-zinsentscheidung-geldpolitik'
+                    url: 'https://www.faz.net'
                 },
                 {
                     title: `Arbeitsmarktdaten ${daysAgo === 0 ? 'überraschen' : 'überraschten'} positiv`,
                     excerpt: `Die Beschäftigungszahlen ${daysAgo === 0 ? 'zeigen' : 'zeigten'} eine robuste Entwicklung. Ökonomen ${daysAgo === 0 ? 'sehen' : 'sahen'} darin ein positives Signal für die Konjunktur.`,
                     source: 'Handelsblatt',
-                    url: 'https://www.handelsblatt.com/finanzen/arbeitsmarkt-beschaeftigungszahlen-analyse'
+                    url: 'https://www.handelsblatt.com'
                 },
                 {
                     title: `Tech-Aktien: Apple und Microsoft ${daysAgo === 0 ? 'führen' : 'führten'} Rally an`,
                     excerpt: `Die großen Technologiekonzerne ${daysAgo === 0 ? 'profitieren' : 'profitierten'} von starken Quartalszahlen und positiven Analystenkommentaren.`,
                     source: 'Der Aktionär',
-                    url: 'https://www.deraktionaer.de/artikel/aktien/tech-aktien-analyse-apple-microsoft'
+                    url: 'https://www.deraktionaer.de'
                 },
                 {
                     title: `Ölpreis ${daysAgo === 0 ? 'reagiert' : 'reagierte'} auf OPEC-Entscheidung`,
                     excerpt: `Die Rohölmärkte ${daysAgo === 0 ? 'verarbeiten' : 'verarbeiteten'} die neuesten Förderquoten-Entscheidungen. Energieaktien ${daysAgo === 0 ? 'zeigen' : 'zeigten'} deutliche Bewegungen.`,
                     source: 'Börse Online',
-                    url: 'https://www.boerse-online.de/nachrichten/rohstoffe/oelpreis-opec-foerderquoten'
+                    url: 'https://www.boerse-online.de'
                 },
                 {
                     title: `Automobilsektor: Neue Absatzzahlen aus China`,
                     excerpt: `Die aktuellen Verkaufszahlen aus dem wichtigen chinesischen Markt ${daysAgo === 0 ? 'geben' : 'gaben'} wichtige Impulse für deutsche Autobauer.`,
                     source: 'Manager Magazin',
-                    url: 'https://www.manager-magazin.de/unternehmen/autoindustrie/china-absatzzahlen-analyse'
+                    url: 'https://www.manager-magazin.de'
                 },
                 {
                     title: `Fed-Protokoll ${daysAgo === 0 ? 'gibt' : 'gab'} Einblick in Geldpolitik`,
                     excerpt: `Die Mitschrift der letzten Notenbanksitzung ${daysAgo === 0 ? 'zeigt' : 'zeigte'} die Diskussion über künftige Zinsschritte. Anleger ${daysAgo === 0 ? 'analysieren' : 'analysierten'} die Details genau.`,
                     source: 'Börsen-Zeitung',
-                    url: 'https://www.boersen-zeitung.de/geldpolitik/fed-protokoll-zinsentscheidung'
+                    url: 'https://www.boersen-zeitung.de'
                 },
                 {
                     title: `DAX-Konzerne: Dividendensaison ${daysAgo === 0 ? 'nimmt' : 'nahm'} Fahrt auf`,
                     excerpt: `Die Ausschüttungen der deutschen Großunternehmen ${daysAgo === 0 ? 'erreichen' : 'erreichten'} neue Rekordwerte. Anleger ${daysAgo === 0 ? 'können' : 'konnten'} sich über hohe Renditen freuen.`,
                     source: 'finanzen.net',
-                    url: 'https://www.finanzen.net/nachricht/aktien/dax-dividenden-analyse'
+                    url: 'https://www.finanzen.net'
                 },
                 {
                     title: `Immobilienmarkt: Zinswende ${daysAgo === 0 ? 'zeigt' : 'zeigte'} Wirkung`,
                     excerpt: `Die veränderten Finanzierungsbedingungen ${daysAgo === 0 ? 'beeinflussen' : 'beeinflussten'} den Immobiliensektor deutlich. Experten ${daysAgo === 0 ? 'erwarten' : 'erwarteten'} Anpassungen am Markt.`,
                     source: 'Wirtschaftswoche',
-                    url: 'https://www.wiwo.de/finanzen/immobilien/zinswende-auswirkungen-analyse'
+                    url: 'https://www.wiwo.de'
                 }
             ];
 
