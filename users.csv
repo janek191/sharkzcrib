@@ -1,0 +1,4 @@
+username,email,password,role,created_date,last_login,status
+demo,demo@sharkzcrib.com,demo123,user,2024-01-15,2024-01-15,active
+admin,admin@sharkzcrib.com,admin123,admin,2024-01-15,2024-01-15,active
+test,test@example.com,test123,user,2024-01-15,2024-01-15,active

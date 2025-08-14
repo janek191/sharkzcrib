@@ -1356,6 +1356,585 @@
             animation: spin 1s linear infinite;
         }
 
+        /* Login/Register Modal Styles */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-title {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .auth-subtitle {
+            color: #cccccc;
+            font-size: 1rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .auth-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: #cccccc;
+        }
+
+        .auth-toggle-btn {
+            background: none;
+            border: none;
+            color: #00ff88;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 14px;
+        }
+
+        .auth-toggle-btn:hover {
+            color: #ffffff;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #cccccc;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #ffffff;
+        }
+
+        .auth-error {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        .auth-success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: #00ff88;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Konto Button */
+        .account-button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .account-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .account-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+        }
+
+        .account-btn .btn-icon {
+            font-size: 16px;
+        }
+
+        .account-btn .btn-text {
+            font-weight: 500;
+        }
+
+        /* Blur Overlay für Chartanalyse Content */
+        .content-blur-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            border-radius: 20px;
+            pointer-events: auto;
+        }
+
+        /* Container für das Overlay */
+        .analysis-content-container {
+            position: relative;
+        }
+
+        .content-blur-overlay.active {
+            display: flex;
+        }
+
+        .blur-message {
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #00ff88;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            max-width: 400px;
+        }
+
+        .blur-message h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #00ff88;
+        }
+
+        .blur-message p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #cccccc;
+        }
+
+        .blur-message .login-btn {
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .blur-message .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* User Menu */
+        .user-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .user-menu.active {
+            display: flex;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #00ff88, #00ccff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.3);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 71, 87, 0.05));
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            color: #ffd700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .admin-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Admin Panel Styles */
+        .admin-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-controls .auth-btn {
+            padding: 12px 20px;
+            font-size: 14px;
+            min-height: 45px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-controls .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .admin-controls .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .admin-controls .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-count {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .firebase-status {
+            color: #00ccff;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 204, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+
+        .admin-user-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 20px;
+        }
+
+        .admin-user-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .admin-user-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .admin-user-list::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 4px;
+        }
+
+        .admin-user-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 136, 0.5);
+        }
+
+        .admin-user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .admin-user-item:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: 120px 200px 100px 100px;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+        }
+
+        .user-info .username {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        .user-info .email {
+            color: #00ff88;
+            font-size: 14px;
+        }
+
+        .user-info .role {
+            color: #ffd700;
+            font-size: 14px;
+            text-align: center;
+            padding: 4px 8px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .user-info .status {
+            color: #00ccff;
+            font-size: 14px;
+            text-align: center;
+            padding: 4px 8px;
+            background: rgba(0, 204, 255, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 204, 255, 0.3);
+        }
+
+        .delete-user-btn {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: #ff4757;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .delete-user-btn:hover {
+            background: rgba(255, 71, 87, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-actions .auth-btn {
+            flex: 1;
+            min-width: 150px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .admin-actions .auth-btn:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+            border-color: rgba(0, 255, 136, 0.5);
+        }
+
+        /* Session-Warnung Animation */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .admin-status {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .admin-status .user-count,
+        .admin-status .firebase-status {
+            flex: 1;
+            max-width: 200px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -1390,6 +1969,38 @@
             
             .news-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .auth-container {
+                margin: 20px;
+                padding: 30px;
+            }
+
+            .user-menu {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
+                padding: 10px 20px;
+                border-radius: 20px;
+            }
+
+            .account-button-container {
+                position: static;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
             }
         }
 
@@ -1838,10 +2449,28 @@
             <img src="sharkzcrib_logo.PNG" alt="SharkzCrib Logo" class="floating-logo-image">
         </div>
 
+        <!-- Konto Button -->
+        <div class="account-button-container">
+            <button class="account-btn" id="accountBtn">
+                <span class="btn-icon">👤</span>
+                <span class="btn-text">Konto</span>
+            </button>
+        </div>
+
+        <!-- User Menu -->
+        <div class="user-menu" id="userMenu">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userName">Benutzer</span>
+            </div>
+            <button class="admin-btn" id="adminBtn" style="display: none;">👑 Admin</button>
+            <button class="logout-btn" id="logoutBtn">Abmelden</button>
+        </div>
+
         <!-- Hauptnavigation -->
         <nav class="nav-tabs">
             <button class="nav-tab active" data-tab="news">📰 News & Updates</button>
-            <button class="nav-tab" data-tab="analysis">📊 Chartanalysen</button>
+            <button class="nav-tab" data-tab="analysis" id="analysisTab">📊 Chartanalysen</button>
             <button class="nav-tab" data-tab="telegram">📱 Telegram</button>
         </nav>
 
@@ -1954,8 +2583,19 @@
                 </div>
             </div>
 
-            <!-- Chart Container -->
-            <div class="chart-container bitcoin-container" style="display: block;">
+            <!-- Container für den Inhalt mit Overlay -->
+            <div class="analysis-content-container">
+                <!-- Blur Overlay für nicht angemeldete Benutzer -->
+                <div class="content-blur-overlay" id="analysisBlurOverlay">
+                    <div class="blur-message">
+                        <h3>🔒 Zugang gesperrt</h3>
+                        <p>Um die Chartanalysen zu sehen, müssen Sie sich zuerst registrieren oder anmelden.</p>
+                        <button class="login-btn" id="blurLoginBtn">Jetzt anmelden</button>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="chart-container bitcoin-container" style="display: block;">
                 <!-- Chart Toggle Buttons -->
                 <div class="button-group chart-toggle-buttons">
                     <button class="chart-toggle-btn active" data-view="screenshot">
@@ -2246,6 +2886,7 @@
                         <div class="level-description">Technische Indikatoren zeigen einen starken Aufwärtstrend. MACD über Signallinie bestätigt bullisches Momentum, RSI bei 67.5 zeigt noch Raum für weitere Anstiege, und 20 MA als Unterstützung bestätigt die bullische Struktur. Alle Signale deuten auf eine Fortsetzung des Aufwärtstrends hin.</div>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
 
@@ -2365,6 +3006,111 @@
         </div>
 
     </div>
+
+    <!-- Login/Register Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <button class="close-modal" id="closeModal">&times;</button>
+            
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="auth-header">
+                    <h2 class="auth-title">Anmelden</h2>
+                    <p class="auth-subtitle">Zugang zu Chartanalysen freischalten</p>
+                </div>
+                
+                <div class="auth-error" id="loginError"></div>
+                <div class="auth-success" id="loginSuccess"></div>
+                
+                <form class="auth-form" id="loginFormElement">
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="loginUsername" placeholder="Benutzername" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="loginPassword" placeholder="Passwort" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="loginBtn">Anmelden</button>
+                </form>
+                
+                <div class="auth-toggle">
+                    <span>Noch kein Konto? </span>
+                    <button class="auth-toggle-btn" id="showRegister">Registrieren</button>
+                </div>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="registerForm" style="display: none;">
+                <div class="auth-header">
+                    <h2 class="auth-title">Registrieren</h2>
+                    <p class="auth-subtitle">Neues Konto erstellen</p>
+                </div>
+                
+                <div class="auth-error" id="registerError"></div>
+                <div class="auth-success" id="registerSuccess"></div>
+                
+                <form class="auth-form" id="registerFormElement">
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="registerUsername" placeholder="Benutzername" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-input" id="registerEmail" placeholder="E-Mail" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="registerPassword" placeholder="Passwort" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-input" id="registerPasswordConfirm" placeholder="Passwort bestätigen" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="registerBtn">Registrieren</button>
+                </form>
+                
+                <div class="auth-toggle">
+                    <span>Bereits ein Konto? </span>
+                    <button class="auth-toggle-btn" id="showLogin">Anmelden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div class="auth-modal" id="adminModal">
+        <div class="auth-container" style="max-width: 800px;">
+            <button class="close-modal" id="closeAdminModal">&times;</button>
+            
+            <div class="auth-header">
+                <h2 class="auth-title">👑 Admin-Panel</h2>
+                <p class="auth-subtitle">Benutzerverwaltung</p>
+            </div>
+            
+            <div class="auth-error" id="adminError"></div>
+            <div class="auth-success" id="adminSuccess"></div>
+            
+            <div class="admin-controls">
+                <button class="auth-btn" onclick="exportCSV()">📥 CSV Exportieren</button>
+                <button class="auth-btn" onclick="syncAllUsersToFirestore()" id="syncBtn" style="display: none;">🔄 Mit Cloud synchronisieren</button>
+                <button class="auth-btn" onclick="openFirebaseConsole()">🌐 Firebase Console</button>
+            </div>
+            
+            <div class="admin-status">
+                <span class="user-count">Benutzer: <span id="userCount">0</span></span>
+                <span class="firebase-status" id="firebaseStatus">🌐 Offline</span>
+            </div>
+            
+            <div class="admin-user-list" id="adminUserList">
+                <!-- Benutzer werden hier dynamisch eingefügt -->
+            </div>
+            
+            <div class="admin-actions">
+                <button class="auth-btn" onclick="refreshUserList()">🔄 Liste aktualisieren</button>
+                <button class="auth-btn" onclick="showDatabaseStats()">📊 Datenbank-Statistiken</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 
     <!-- TradingView Widget Script -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -2903,14 +3649,21 @@
                         }
                     });
 
-                            // Telegram-spezifische Aktionen
+                    // Prüfen ob Analysis-Tab aktiv ist und Benutzer nicht angemeldet
+                    if (targetId === 'analysis' && !currentUser) {
+                        showAnalysisBlurOverlay();
+                    } else {
+                        hideAnalysisBlurOverlay();
+                    }
+
+                    // Telegram-spezifische Aktionen
                     if (targetId === 'telegram') {
                         // Verzögerung hinzufügen, damit der Content-Bereich erst angezeigt wird
                         setTimeout(() => {
                             loadTelegramChannelInfo();
                         }, 100);
                     }
-    });
+                });
             });
 
             // Haupt-Analyse-Tabs Event Listener
@@ -3832,6 +4585,1014 @@
 
         // Periodisch prüfen, ob Telegram-Content geladen ist
         setInterval(ensureTelegramContentLoaded, 2000);
+
+        // ===== FIREBASE KONFIGURATION =====
+        
+        // Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzJE3BFmHepIKe7aDr4iWylasMGll30Kw",
+            authDomain: "sharkzcrib.firebaseapp.com",
+            databaseURL: "https://sharkzcrib-default-rtdb.firebaseio.com",
+            projectId: "sharkzcrib",
+            storageBucket: "sharkzcrib.firebasestorage.app",
+            messagingSenderId: "1024765182316",
+            appId: "1:1024765182316:web:2e25a97ef49c3d29c63349"
+        };
+
+        // Firebase initialisieren
+        let firebaseApp, firestore, auth;
+        let isFirebaseReady = false;
+
+        // Firebase Setup
+        function initializeFirebase() {
+            try {
+                firebaseApp = firebase.initializeApp(firebaseConfig);
+                firestore = firebase.firestore();
+                auth = firebase.auth();
+                isFirebaseReady = true;
+                console.log('✅ Firebase erfolgreich initialisiert');
+                
+                // Status im Admin-Panel aktualisieren
+                updateFirebaseStatus();
+                
+                // Benutzerdaten aus Firestore laden
+                loadUsersFromFirestore();
+            } catch (error) {
+                console.error('❌ Firebase Initialisierung fehlgeschlagen:', error);
+                // Fallback: Lokale Daten verwenden
+                loadLocalUsers();
+            }
+        }
+
+        // Firebase-Status im Admin-Panel aktualisieren
+        function updateFirebaseStatus() {
+            const firebaseStatus = document.getElementById('firebaseStatus');
+            const syncBtn = document.getElementById('syncBtn');
+            
+            if (firebaseStatus) {
+                if (isFirebaseReady) {
+                    firebaseStatus.textContent = '✅ Cloud verbunden';
+                    firebaseStatus.style.color = '#00ff88';
+                    if (syncBtn) syncBtn.style.display = 'inline-block';
+                } else {
+                    firebaseStatus.textContent = '🌐 Offline';
+                    firebaseStatus.style.color = '#cccccc';
+                    if (syncBtn) syncBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // ===== SESSION-MANAGEMENT =====
+        
+        // Session-Timeout starten
+        function startSessionTimeout() {
+            if (!currentUser) return;
+            
+            // Bestehenden Timeout stoppen
+            stopSessionTimeout();
+            
+            // Neuen Timeout setzen
+            sessionTimeout = setTimeout(() => {
+                logout('timeout');
+            }, SESSION_TIMEOUT_MINUTES * 60 * 1000);
+            
+            console.log(`Session-Timeout gestartet: ${SESSION_TIMEOUT_MINUTES} Minuten`);
+        }
+        
+        // Session-Timeout stoppen
+        function stopSessionTimeout() {
+            if (sessionTimeout) {
+                clearTimeout(sessionTimeout);
+                sessionTimeout = null;
+                console.log('Session-Timeout gestoppt');
+            }
+        }
+        
+        // Benutzeraktivität registrieren
+        function updateUserActivity() {
+            if (currentUser) {
+                lastActivity = Date.now();
+                console.log('Benutzeraktivität registriert:', new Date().toLocaleString());
+            }
+        }
+        
+        // Session-Status prüfen
+        function checkSessionStatus() {
+            if (!currentUser) return;
+            
+            const now = Date.now();
+            const timeSinceLastActivity = now - lastActivity;
+            const timeoutMs = SESSION_TIMEOUT_MINUTES * 60 * 1000;
+            
+            // Warnung 5 Minuten vor Timeout
+            if (timeSinceLastActivity > (timeoutMs - 300000) && timeSinceLastActivity < timeoutMs) {
+                showSessionWarning();
+            }
+            
+            // Timeout wenn überschritten
+            if (timeSinceLastActivity >= timeoutMs) {
+                logout('timeout');
+            }
+        }
+        
+        // Session-Warnung anzeigen
+        function showSessionWarning() {
+            // Prüfen ob Warnung bereits angezeigt wird
+            if (document.getElementById('sessionWarning')) return;
+            
+            const warning = document.createElement('div');
+            warning.id = 'sessionWarning';
+            warning.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, rgba(255, 165, 2, 0.95), rgba(255, 107, 53, 0.95));
+                    color: white;
+                    padding: 20px 25px;
+                    border-radius: 15px;
+                    box-shadow: 0 8px 30px rgba(255, 165, 2, 0.4);
+                    z-index: 10000;
+                    animation: slideInRight 0.3s ease-out;
+                    max-width: 320px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    backdrop-filter: blur(10px);
+                ">
+                    <div style="font-weight: bold; margin-bottom: 8px; font-size: 16px;">⚠️ Session läuft ab</div>
+                    <div style="font-size: 14px; line-height: 1.4; margin-bottom: 15px;">Ihre Session läuft in 5 Minuten ab. Klicken Sie irgendwo, um aktiv zu bleiben.</div>
+                    <button onclick="extendSession()" style="
+                        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-size: 13px;
+                        font-weight: 500;
+                        transition: all 0.3s ease;
+                        width: 100%;
+                    " onmouseover="this.style.background='linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2))'" onmouseout="this.style.background='linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))'">Session verlängern</button>
+                </div>
+            `;
+            
+            document.body.appendChild(warning);
+            
+            // Warnung nach 15 Sekunden automatisch ausblenden
+            setTimeout(() => {
+                if (warning.parentNode) {
+                    warning.parentNode.removeChild(warning);
+                }
+            }, 15000);
+        }
+        
+        // Session verlängern
+        function extendSession() {
+            updateUserActivity();
+            startSessionTimeout();
+            
+            // Warnung entfernen
+            const warning = document.getElementById('sessionWarning');
+            if (warning && warning.parentNode) {
+                warning.parentNode.removeChild(warning);
+            }
+            
+            // Erfolgsmeldung anzeigen
+            showMessage('success', 'Session verlängert!', 'login');
+        }
+        
+        // Event Listener für Benutzeraktivität
+        function setupActivityListeners() {
+            const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+            
+            activityEvents.forEach(event => {
+                document.addEventListener(event, updateUserActivity, true);
+            });
+            
+            // Regelmäßige Session-Prüfung
+            setInterval(checkSessionStatus, ACTIVITY_CHECK_INTERVAL);
+        }
+        
+        // Page Visibility API für Tab-Wechsel
+        function setupPageVisibilityListener() {
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden && currentUser) {
+                    console.log('Tab/Seite verlassen - Session wird beibehalten');
+                } else if (!document.hidden && currentUser) {
+                    console.log('Tab/Seite wieder aktiv - Session wird fortgesetzt');
+                    updateUserActivity();
+                }
+            });
+        }
+        
+        // Beforeunload Event für Seiten-Schließen
+        function setupBeforeUnloadListener() {
+            window.addEventListener('beforeunload', (event) => {
+                if (currentUser) {
+                    // Session beim Schließen löschen
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('sessionStartTime');
+                    console.log('Seite wird geschlossen - Session gelöscht');
+                }
+            });
+            
+            // Zusätzlich: Pagehide Event für bessere Browser-Kompatibilität
+            window.addEventListener('pagehide', (event) => {
+                if (currentUser) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('sessionStartTime');
+                    console.log('Seite wird verlassen - Session gelöscht');
+                }
+            });
+            
+            // Unload Event als Fallback
+            window.addEventListener('unload', (event) => {
+                if (currentUser) {
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('sessionStartTime');
+                    console.log('Seite wird entladen - Session gelöscht');
+                }
+            });
+        }
+
+        // ===== AUTHENTIFIZIERUNGSSYSTEM =====
+        
+        // Standard-Benutzerdaten (immer verfügbar)
+        const DEFAULT_USERS = [
+            { username: 'demo', email: 'demo@sharkzcrib.com', password: 'demo123', role: 'user' },
+            { username: 'admin', email: 'admin@sharkzcrib.com', password: 'admin123', role: 'admin' }
+        ];
+
+        // Benutzerdaten (Fallback für lokale Speicherung)
+        let users = [...DEFAULT_USERS];
+
+        // Aktueller Benutzer
+        let currentUser = null;
+        
+        // Session-Management
+        let sessionTimeout = null;
+        let lastActivity = Date.now();
+        const SESSION_TIMEOUT_MINUTES = 30; // 30 Minuten Inaktivität
+        const ACTIVITY_CHECK_INTERVAL = 60000; // Alle 60 Sekunden prüfen
+
+        // Modal-Funktionen
+        function showAuthModal(type = 'login') {
+            const modal = document.getElementById('authModal');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            if (type === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideAuthModal() {
+            const modal = document.getElementById('authModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Formulare zurücksetzen
+            document.getElementById('loginFormElement').reset();
+            document.getElementById('registerFormElement').reset();
+            hideMessages();
+        }
+
+        function showMessage(type, message, formType) {
+            let errorElement, successElement;
+            
+            if (formType === 'admin') {
+                errorElement = document.getElementById('adminError');
+                successElement = document.getElementById('adminSuccess');
+            } else {
+                errorElement = document.getElementById(formType + 'Error');
+                successElement = document.getElementById(formType + 'Success');
+            }
+            
+            if (!errorElement || !successElement) return;
+            
+            hideMessages(formType);
+            
+            if (type === 'error') {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            } else {
+                successElement.textContent = message;
+                successElement.style.display = 'block';
+            }
+        }
+
+        function hideMessages(formType = null) {
+            if (formType === 'admin') {
+                const adminError = document.getElementById('adminError');
+                const adminSuccess = document.getElementById('adminSuccess');
+                if (adminError) adminError.style.display = 'none';
+                if (adminSuccess) adminSuccess.style.display = 'none';
+            } else if (formType) {
+                const errorElement = document.getElementById(formType + 'Error');
+                const successElement = document.getElementById(formType + 'Success');
+                if (errorElement) errorElement.style.display = 'none';
+                if (successElement) successElement.style.display = 'none';
+            } else {
+                document.querySelectorAll('.auth-error, .auth-success').forEach(el => {
+                    el.style.display = 'none';
+                });
+            }
+        }
+
+        // Authentifizierungsfunktionen
+        async function login(username, password) {
+            console.log('=== LOGIN DEBUG ===');
+            console.log('Eingegebene Daten:', { username, password });
+            
+            // Sicherstellen dass Admin-Daten verfügbar sind
+            ensureAdminUsers();
+            
+            console.log('Verfügbare Benutzer:', users);
+            console.log('Benutzeranzahl:', users.length);
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            console.log('Gefundener Benutzer:', user);
+            
+            if (user) {
+                currentUser = user;
+                
+                // Last login aktualisieren
+                user.last_login = new Date().toISOString().split('T')[0];
+                
+                // Lokale Speicherung
+                saveUsersWithTimestamp();
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                localStorage.setItem('sessionStartTime', Date.now().toString());
+                
+                // In Firestore aktualisieren (falls verfügbar)
+                if (isFirebaseReady) {
+                    await saveUserToFirestore(user);
+                }
+                
+                // Session-Timeout starten
+                startSessionTimeout();
+                
+                updateUIAfterAuth();
+                hideAuthModal();
+                showMessage('success', 'Erfolgreich angemeldet!', 'login');
+                return true;
+            } else {
+                showMessage('error', 'Ungültige Anmeldedaten!', 'login');
+                return false;
+            }
+        }
+
+        async function register(username, email, password) {
+            // Prüfen ob Benutzername bereits existiert
+            if (users.find(u => u.username === username)) {
+                showMessage('error', 'Benutzername bereits vergeben!', 'register');
+                return false;
+            }
+            
+            // Prüfen ob E-Mail bereits existiert
+            if (users.find(u => u.email === email)) {
+                showMessage('error', 'E-Mail bereits registriert!', 'register');
+                return false;
+            }
+            
+            // Neuen Benutzer erstellen
+            const newUser = {
+                username: username,
+                email: email,
+                password: password,
+                role: 'user',
+                created_date: new Date().toISOString().split('T')[0],
+                last_login: new Date().toISOString().split('T')[0],
+                status: 'active'
+            };
+            
+            users.push(newUser);
+            
+            // Lokale Speicherung
+            saveUsersWithTimestamp();
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // In Firestore speichern (falls verfügbar)
+            if (isFirebaseReady) {
+                const success = await saveUserToFirestore(newUser);
+                if (success) {
+                    showMessage('success', 'Registrierung erfolgreich! Benutzer in der Cloud gespeichert.', 'register');
+                } else {
+                    showMessage('success', 'Registrierung erfolgreich! (Nur lokal gespeichert)', 'register');
+                }
+            } else {
+                showMessage('success', 'Registrierung erfolgreich! Sie können sich jetzt anmelden.', 'register');
+            }
+            
+            // Nach 2 Sekunden zum Login wechseln
+            setTimeout(() => {
+                document.getElementById('showLogin').click();
+            }, 2000);
+            
+            return true;
+        }
+
+        function logout(reason = 'manual') {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('sessionStartTime');
+            
+            // Session-Timeout stoppen
+            stopSessionTimeout();
+            
+            updateUIAfterAuth();
+            
+            // Unterschiedliche Nachrichten je nach Grund
+            if (reason === 'timeout') {
+                showMessage('error', 'Session abgelaufen! Bitte melden Sie sich erneut an.', 'login');
+            } else if (reason === 'page_close') {
+                // Keine Nachricht beim Schließen der Seite
+            } else {
+                showMessage('success', 'Erfolgreich abgemeldet!', 'login');
+            }
+        }
+
+        function updateUIAfterAuth() {
+            const analysisTab = document.getElementById('analysisTab');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            const userAvatar = document.getElementById('userAvatar');
+            const adminBtn = document.getElementById('adminBtn');
+            
+            if (currentUser) {
+                // User Menu anzeigen
+                userMenu.classList.add('active');
+                userName.textContent = currentUser.username;
+                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                
+                // Admin-Button für Admin-Benutzer anzeigen
+                if (currentUser.role === 'admin') {
+                    adminBtn.style.display = 'inline-block';
+                } else {
+                    adminBtn.style.display = 'none';
+                }
+                
+                // Blur-Overlay ausblenden
+                hideAnalysisBlurOverlay();
+                
+                // Konto-Button ausblenden
+                document.getElementById('accountBtn').style.display = 'none';
+            } else {
+                // User Menu ausblenden
+                userMenu.classList.remove('active');
+                adminBtn.style.display = 'none';
+                
+                // Konto-Button anzeigen
+                document.getElementById('accountBtn').style.display = 'flex';
+                
+                // Wenn Analysis-Tab aktiv ist, Blur-Overlay anzeigen
+                if (analysisTab.classList.contains('active')) {
+                    showAnalysisBlurOverlay();
+                }
+            }
+        }
+
+        // Event Listener für Authentifizierung
+        function initializeAuth() {
+            // Konto Button
+            document.getElementById('accountBtn').addEventListener('click', function() {
+                showAuthModal('login');
+            });
+
+            // Blur Login Button
+            document.getElementById('blurLoginBtn').addEventListener('click', function() {
+                showAuthModal('login');
+            });
+
+            // Login Form
+            document.getElementById('loginFormElement').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                if (login(username, password)) {
+                    // Erfolgreich angemeldet
+                }
+            });
+
+            // Register Form
+            document.getElementById('registerFormElement').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('registerUsername').value;
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+                
+                if (password !== passwordConfirm) {
+                    showMessage('error', 'Passwörter stimmen nicht überein!', 'register');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    showMessage('error', 'Passwort muss mindestens 6 Zeichen lang sein!', 'register');
+                    return;
+                }
+                
+                register(username, email, password);
+            });
+
+            // Form Toggle
+            document.getElementById('showRegister').addEventListener('click', function() {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+                hideMessages();
+            });
+
+            document.getElementById('showLogin').addEventListener('click', function() {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                hideMessages();
+            });
+
+            // Modal schließen
+            document.getElementById('closeModal').addEventListener('click', hideAuthModal);
+            document.getElementById('authModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideAuthModal();
+                }
+            });
+
+            // Admin Panel
+            document.getElementById('adminBtn').addEventListener('click', showAdminPanel);
+            document.getElementById('closeAdminModal').addEventListener('click', hideAdminPanel);
+            document.getElementById('adminModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideAdminPanel();
+                }
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
+            // ESC-Taste zum Schließen
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    hideAuthModal();
+                    hideAdminPanel();
+                }
+            });
+        }
+
+        // Blur-Overlay Funktionen
+        function showAnalysisBlurOverlay() {
+            const overlay = document.getElementById('analysisBlurOverlay');
+            if (overlay) {
+                overlay.classList.add('active');
+            }
+        }
+
+        function hideAnalysisBlurOverlay() {
+            const overlay = document.getElementById('analysisBlurOverlay');
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+
+        // Admin-Panel Funktionen
+        function showAdminPanel() {
+            const adminModal = document.getElementById('adminModal');
+            if (adminModal) {
+                adminModal.classList.add('active');
+                updateAdminUserList();
+            }
+        }
+
+        function hideAdminPanel() {
+            const adminModal = document.getElementById('adminModal');
+            if (adminModal) {
+                adminModal.classList.remove('active');
+            }
+        }
+
+        function updateAdminUserList() {
+            const userList = document.getElementById('adminUserList');
+            const userCount = document.getElementById('userCount');
+            if (!userList) return;
+
+            // Benutzeranzahl aktualisieren
+            if (userCount) {
+                userCount.textContent = users.length;
+            }
+
+            userList.innerHTML = users.map((user, index) => `
+                <div class="admin-user-item">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="email">${user.email}</span>
+                        <span class="role">${user.role}</span>
+                        <span class="status">${user.status || 'active'}</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="delete-user-btn" onclick="deleteUser(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteUser(index) {
+            if (confirm('Benutzer wirklich löschen?')) {
+                users.splice(index, 1);
+                localStorage.setItem('users', JSON.stringify(users));
+                updateAdminUserList();
+                showMessage('success', 'Benutzer gelöscht!', 'admin');
+            }
+        }
+
+        function exportCSV() {
+            const csvHeader = 'username,email,password,role,created_date,last_login,status\n';
+            const csvData = users.map(user => {
+                return `${user.username},${user.email},${user.password},${user.role},${user.created_date || ''},${user.last_login || ''},${user.status || 'active'}`;
+            }).join('\n');
+            
+            const fullCSV = csvHeader + csvData;
+            const blob = new Blob([fullCSV], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'users_updated.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            showMessage('success', 'CSV-Datei heruntergeladen!', 'admin');
+        }
+
+        // Firebase Console öffnen
+        function openFirebaseConsole() {
+            if (firebaseConfig && firebaseConfig.projectId) {
+                const consoleUrl = `https://console.firebase.google.com/project/${firebaseConfig.projectId}/firestore/data`;
+                window.open(consoleUrl, '_blank');
+                showMessage('success', 'Firebase Console wird geöffnet...', 'admin');
+            } else {
+                // Fallback: Generische Firebase Console öffnen
+                const consoleUrl = 'https://console.firebase.google.com/';
+                window.open(consoleUrl, '_blank');
+                showMessage('success', 'Firebase Console wird geöffnet...', 'admin');
+            }
+        }
+
+        // Benutzerliste aktualisieren
+        function refreshUserList() {
+            if (isFirebaseReady) {
+                loadUsersFromFirestore();
+                showMessage('success', 'Benutzerliste von der Cloud aktualisiert!', 'admin');
+            } else {
+                // Lokale Daten neu laden
+                loadUsersWithTimestamp();
+                updateAdminUserList();
+                showMessage('success', 'Lokale Benutzerliste aktualisiert!', 'admin');
+            }
+        }
+
+        // Datenbank-Statistiken anzeigen
+        function showDatabaseStats() {
+            const stats = {
+                totalUsers: users.length,
+                adminUsers: users.filter(u => u.role === 'admin').length,
+                regularUsers: users.filter(u => u.role === 'user').length,
+                activeUsers: users.filter(u => u.status === 'active').length,
+                firebaseStatus: isFirebaseReady ? 'Verbunden' : 'Offline',
+                lastSync: new Date().toLocaleString('de-DE')
+            };
+
+            const statsMessage = `
+📊 Datenbank-Statistiken:
+• Gesamtbenutzer: ${stats.totalUsers}
+• Administratoren: ${stats.adminUsers}
+• Reguläre Benutzer: ${stats.regularUsers}
+• Aktive Benutzer: ${stats.activeUsers}
+• Firebase-Status: ${stats.firebaseStatus}
+• Letzte Synchronisation: ${stats.lastSync}
+            `;
+
+            alert(statsMessage);
+        }
+
+        // ===== FIRESTORE FUNKTIONEN =====
+        
+        // Benutzer aus Firestore laden
+        async function loadUsersFromFirestore() {
+            if (!isFirebaseReady) return;
+            
+            try {
+                const usersSnapshot = await firestore.collection('users').get();
+                users = [];
+                
+                usersSnapshot.forEach(doc => {
+                    const userData = doc.data();
+                    users.push({
+                        id: doc.id,
+                        ...userData
+                    });
+                });
+                
+                console.log('✅ Benutzer aus Firestore geladen:', users.length);
+                
+                // Lokalen Cache aktualisieren
+                saveUsersWithTimestamp();
+                
+                // UI aktualisieren
+                if (currentUser) {
+                    updateUIAfterAuth();
+                }
+            } catch (error) {
+                console.error('❌ Fehler beim Laden aus Firestore:', error);
+                // Fallback: Lokale Daten laden
+                loadLocalUsers();
+            }
+        }
+
+        // Benutzer in Firestore speichern
+        async function saveUserToFirestore(user) {
+            if (!isFirebaseReady) return false;
+            
+            try {
+                if (user.id) {
+                    // Bestehenden Benutzer aktualisieren
+                    await firestore.collection('users').doc(user.id).update({
+                        username: user.username,
+                        email: user.email,
+                        password: user.password,
+                        role: user.role,
+                        last_login: user.last_login,
+                        status: user.status,
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } else {
+                    // Neuen Benutzer erstellen
+                    const docRef = await firestore.collection('users').add({
+                        username: user.username,
+                        email: user.email,
+                        password: user.password,
+                        role: user.role,
+                        created_date: user.created_date,
+                        last_login: user.last_login,
+                        status: user.status,
+                        created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    user.id = docRef.id;
+                }
+                
+                console.log('✅ Benutzer in Firestore gespeichert:', user.username);
+                return true;
+            } catch (error) {
+                console.error('❌ Fehler beim Speichern in Firestore:', error);
+                return false;
+            }
+        }
+
+        // Alle Benutzer in Firestore synchronisieren
+        async function syncAllUsersToFirestore() {
+            if (isFirebaseReady) {
+                try {
+                    for (const user of users) {
+                        await saveUserToFirestore(user);
+                    }
+                    console.log('✅ Alle Benutzer mit Firestore synchronisiert');
+                    showMessage('success', 'Alle Benutzer mit der Cloud synchronisiert!', 'admin');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Fehler bei der Synchronisation:', error);
+                    showMessage('error', 'Fehler bei der Cloud-Synchronisation!', 'admin');
+                    return false;
+                }
+            } else {
+                // Fallback: Lokale Daten neu laden
+                loadUsersWithTimestamp();
+                updateAdminUserList();
+                showMessage('success', 'Lokale Benutzerliste aktualisiert!', 'admin');
+                return true;
+            }
+        }
+
+        // CSV-Datei importieren (beim Laden der Seite)
+        function importCSVData() {
+            // Versuche, die users.csv Datei zu laden
+            fetch('users.csv')
+                .then(response => response.text())
+                .then(csvData => {
+                    const lines = csvData.split('\n');
+                    const headers = lines[0].split(',');
+                    
+                    // CSV-Daten parsen und zu users Array hinzufügen
+                    for (let i = 1; i < lines.length; i++) {
+                        if (lines[i].trim()) {
+                            const values = lines[i].split(',');
+                            const user = {
+                                username: values[0],
+                                email: values[1],
+                                password: values[2],
+                                role: values[3],
+                                created_date: values[4],
+                                last_login: values[5],
+                                status: values[6]
+                            };
+                            
+                            // Prüfen ob Benutzer bereits existiert
+                            if (!users.find(u => u.username === user.username)) {
+                                users.push(user);
+                            }
+                        }
+                    }
+                    
+                    // Aktualisierte Benutzerliste speichern
+                    localStorage.setItem('users', JSON.stringify(users));
+                    console.log('CSV-Daten erfolgreich importiert:', users.length, 'Benutzer geladen');
+                    
+                    // Mit Firestore synchronisieren (falls verfügbar)
+                    if (isFirebaseReady) {
+                        syncAllUsersToFirestore();
+                    }
+                })
+                .catch(error => {
+                    console.log('CSV-Datei nicht gefunden oder Fehler beim Laden:', error);
+                });
+        }
+
+        // Erweiterte Datenspeicherung mit Timestamp
+        function saveUsersWithTimestamp() {
+            const timestamp = new Date().toISOString();
+            const dataToSave = {
+                users: users,
+                lastUpdated: timestamp,
+                version: '1.0'
+            };
+            localStorage.setItem('usersData', JSON.stringify(dataToSave));
+        }
+
+        // Benutzerdaten mit Timestamp laden
+        function loadUsersWithTimestamp() {
+            const savedData = localStorage.getItem('usersData');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    if (data.users && Array.isArray(data.users)) {
+                        users = data.users;
+                        console.log('Benutzerdaten geladen:', users.length, 'Benutzer, zuletzt aktualisiert:', data.lastUpdated);
+                        return true;
+                    }
+                } catch (error) {
+                    console.error('Fehler beim Laden der Benutzerdaten:', error);
+                }
+            }
+            return false;
+        }
+
+        // Benutzerdaten beim Laden der Seite wiederherstellen
+        function restoreUserSession() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedUsers = localStorage.getItem('users');
+            const sessionStartTime = localStorage.getItem('sessionStartTime');
+            
+            console.log('=== RESTORE SESSION DEBUG ===');
+            console.log('DEFAULT_USERS:', DEFAULT_USERS);
+            
+            // IMMER zuerst Standard-Admin-Daten setzen
+            users = [...DEFAULT_USERS];
+            console.log('Users nach DEFAULT_USERS:', users);
+            
+            // Dann gespeicherte Benutzer laden (falls vorhanden)
+            if (savedUsers) {
+                try {
+                    const loadedUsers = JSON.parse(savedUsers);
+                    console.log('Geladene Benutzer aus localStorage:', loadedUsers);
+                    
+                    // Nur neue Benutzer hinzufügen, Admin-Daten NICHT überschreiben
+                    const newUsers = loadedUsers.filter(loadedUser => 
+                        !DEFAULT_USERS.some(defaultUser => defaultUser.username === loadedUser.username)
+                    );
+                    
+                    console.log('Neue Benutzer zum Hinzufügen:', newUsers);
+                    
+                    // Standard-Admin-Daten + neue Benutzer
+                    users = [...DEFAULT_USERS, ...newUsers];
+                } catch (error) {
+                    console.error('Fehler beim Laden der gespeicherten Benutzer:', error);
+                    // Bei Fehler nur Standard-Daten verwenden
+                    users = [...DEFAULT_USERS];
+                }
+            }
+            
+            // Sicherheitscheck: Falls users immer noch leer ist, DEFAULT_USERS verwenden
+            if (users.length === 0) {
+                console.warn('Users-Liste ist leer! Verwende DEFAULT_USERS als Fallback.');
+                users = [...DEFAULT_USERS];
+            }
+            
+            if (savedUser && sessionStartTime) {
+                try {
+                    const sessionAge = Date.now() - parseInt(sessionStartTime);
+                    const maxSessionAge = SESSION_TIMEOUT_MINUTES * 60 * 1000; // 30 Minuten in Millisekunden
+                    
+                    // Nur wiederherstellen wenn Session noch nicht abgelaufen ist
+                    if (sessionAge < maxSessionAge) {
+                        currentUser = JSON.parse(savedUser);
+                        updateUIAfterAuth();
+                        startSessionTimeout();
+                        console.log('Session wiederhergestellt für:', currentUser.username);
+                    } else {
+                        // Session ist abgelaufen - löschen
+                        localStorage.removeItem('currentUser');
+                        localStorage.removeItem('sessionStartTime');
+                        console.log('Session ist abgelaufen - Anmeldung erforderlich');
+                    }
+                } catch (error) {
+                    console.error('Fehler beim Wiederherstellen der Session:', error);
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('sessionStartTime');
+                }
+            }
+            
+            console.log('Finale users-Liste:', users);
+        }
+
+        // Sicherstellen dass Admin-Daten verfügbar sind
+        function ensureAdminUsers() {
+            console.log('=== ENSURE ADMIN USERS ===');
+            console.log('Aktuelle users-Liste:', users);
+            
+            // Prüfen ob Admin-Daten vorhanden sind
+            const adminExists = users.some(u => u.username === 'admin');
+            const demoExists = users.some(u => u.username === 'demo');
+            
+            console.log('Admin vorhanden:', adminExists);
+            console.log('Demo vorhanden:', demoExists);
+            
+            if (!adminExists || !demoExists) {
+                console.warn('Admin oder Demo fehlt! Füge DEFAULT_USERS hinzu.');
+                users = [...DEFAULT_USERS];
+                console.log('Users nach Korrektur:', users);
+            }
+        }
+
+        // Debug-Funktion: Benutzerliste und Speicherstatus anzeigen
+        function showUserList() {
+            console.log('=== BENUTZERDATEN STATUS ===');
+            console.log('Aktuelle Benutzerliste:', users);
+            console.log('Anzahl Benutzer:', users.length);
+            
+            // Speicherstatus anzeigen
+            const savedData = localStorage.getItem('usersData');
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    console.log('Speicherstatus:', {
+                        lastUpdated: data.lastUpdated,
+                        version: data.version,
+                        localStorageSize: (savedData.length / 1024).toFixed(2) + ' KB'
+                    });
+                } catch (error) {
+                    console.error('Fehler beim Parsen der Speicherdaten:', error);
+                }
+            }
+            
+            // Einzelne localStorage Items
+            console.log('localStorage Items:', {
+                users: localStorage.getItem('users') ? '✓' : '✗',
+                currentUser: localStorage.getItem('currentUser') ? '✓' : '✗',
+                usersData: localStorage.getItem('usersData') ? '✓' : '✗'
+            });
+        }
+
+        // Authentifizierung initialisieren
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAuth();
+            
+            // Firebase initialisieren
+            initializeFirebase();
+            
+            // Zuerst lokale Daten laden
+            if (!loadUsersWithTimestamp()) {
+                // Falls keine lokalen Daten, CSV importieren
+                importCSVData();
+            }
+            
+            restoreUserSession();
+            
+            // Session-Management initialisieren
+            setupActivityListeners();
+            setupPageVisibilityListener();
+            setupBeforeUnloadListener();
+            
+            // Debug: Benutzerliste nach 2 Sekunden anzeigen
+            setTimeout(showUserList, 2000);
+        });
 
         // Fazit basierend auf allen Indikatoren aktualisieren
         function updateSummary(rsi, macd, ma20, sentiment) {
