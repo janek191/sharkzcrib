@@ -44,7 +44,9 @@ Professionelle Chartanalysen & Marktinsights für Krypto & Aktien
 
 ## 📝 Lizenz
 
-MIT License - Frei verwendbar für private & kommerzielle Zwecke
+**Alle Rechte vorbehalten** - Dieses Repository und der enthaltene Code sind urheberrechtlich geschützt.
+
+**Verwendung nur mit ausdrücklicher Genehmigung des Autors erlaubt.**
 
 ---
 
