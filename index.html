@@ -1585,17 +1585,8 @@
             min-width: 200px;
             backdrop-filter: blur(15px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
+            display: none;
             z-index: 1001;
-        }
-
-        .account-dropdown.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
         }
 
         .dropdown-item {
@@ -5675,15 +5666,17 @@
             console.log('🖱️ Mein Konto Button geklickt!');
             const dropdown = document.getElementById('accountDropdown');
             if (dropdown) {
-                if (dropdown.classList.contains('active')) {
-                    dropdown.classList.remove('active');
+                // Dropdown direkt anzeigen/verstecken
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
                     console.log('📋 Dropdown geschlossen');
                 } else {
-                    dropdown.classList.add('active');
+                    dropdown.style.display = 'block';
                     console.log('📋 Dropdown geöffnet');
                 }
             } else {
                 console.error('❌ Dropdown nicht gefunden!');
+                alert('Dropdown nicht gefunden!');
             }
         }
 
