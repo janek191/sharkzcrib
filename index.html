@@ -5069,30 +5069,33 @@
         function initializeAuth() {
             console.log('🔧 Initialisiere Authentifizierung...');
 
-            // Dropdown Items Event Listener
+            // NEUE EVENT LISTENER FÜR DROPDOWN ITEMS
             document.getElementById('profileItem').addEventListener('click', function() {
-                // TODO: Profil bearbeiten implementieren
                 console.log('Profil bearbeiten geklickt');
-                document.getElementById('accountDropdown').classList.remove('active');
+                document.getElementById('accountDropdown').style.display = 'none';
             });
 
             document.getElementById('adminItem').addEventListener('click', function() {
+                console.log('Admin Panel geklickt');
                 showAdminPanel();
-                document.getElementById('accountDropdown').classList.remove('active');
+                document.getElementById('accountDropdown').style.display = 'none';
             });
 
             document.getElementById('logoutItem').addEventListener('click', function() {
+                console.log('Abmelden geklickt');
                 logout();
-                document.getElementById('accountDropdown').classList.remove('active');
+                document.getElementById('accountDropdown').style.display = 'none';
             });
 
-            // Dropdown schließen wenn außerhalb geklickt wird
+            // NEUER EVENT LISTENER - Dropdown schließen wenn außerhalb geklickt wird
             document.addEventListener('click', function(e) {
                 const dropdown = document.getElementById('accountDropdown');
-                const accountBtn = document.getElementById('accountBtn'); // Mein Konto Button
+                const accountBtn = document.getElementById('accountBtn');
                 
-                if (!dropdown.contains(e.target) && !accountBtn.contains(e.target)) {
-                    dropdown.classList.remove('active');
+                if (dropdown && accountBtn) {
+                    if (!dropdown.contains(e.target) && !accountBtn.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                    }
                 }
             });
 
@@ -5659,24 +5662,43 @@
             }, 1000);
         });
         
-        // EINFACHE FUNKTIONEN FÜR ZWEI BUTTONS!
+        // KOMPLETT NEUE FUNKTIONEN FÜR DEN BUTTON!
         
         // Mein Konto Button - Dropdown öffnen/schließen
         function toggleAccountMenu() {
             console.log('🖱️ Mein Konto Button geklickt!');
+            console.log('👤 Aktueller Benutzer:', currentUser);
+            
             const dropdown = document.getElementById('accountDropdown');
-            if (dropdown) {
-                // Dropdown direkt anzeigen/verstecken
-                if (dropdown.style.display === 'block') {
-                    dropdown.style.display = 'none';
-                    console.log('📋 Dropdown geschlossen');
-                } else {
-                    dropdown.style.display = 'block';
-                    console.log('📋 Dropdown geöffnet');
-                }
-            } else {
+            if (!dropdown) {
                 console.error('❌ Dropdown nicht gefunden!');
                 alert('Dropdown nicht gefunden!');
+                return;
+            }
+            
+            // Dropdown Status prüfen und umschalten
+            const isVisible = dropdown.style.display === 'block';
+            
+            if (isVisible) {
+                // Dropdown schließen
+                dropdown.style.display = 'none';
+                console.log('📋 Dropdown geschlossen');
+            } else {
+                // Dropdown öffnen
+                dropdown.style.display = 'block';
+                console.log('📋 Dropdown geöffnet');
+                
+                // Admin Item anzeigen/verstecken basierend auf Benutzerrolle
+                const adminItem = document.getElementById('adminItem');
+                if (adminItem && currentUser) {
+                    if (currentUser.role === 'admin') {
+                        adminItem.style.display = 'flex';
+                        console.log('👑 Admin Panel angezeigt');
+                    } else {
+                        adminItem.style.display = 'none';
+                        console.log('👑 Admin Panel versteckt');
+                    }
+                }
             }
         }
 
