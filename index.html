@@ -1535,8 +1535,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            z-index: 9999; /* VIEL HÖHERER Z-INDEX */
-            pointer-events: auto; /* STELLE SICHER DASS KLICKS FUNKTIONIEREN */
+            z-index: 1000;
         }
 
         .account-btn {
@@ -2452,9 +2451,9 @@
             <img src="sharkzcrib_logo.PNG" alt="SharkzCrib Logo" class="floating-logo-image">
         </div>
 
-        <!-- NEUER Konto Button - Garantiert funktioniert! -->
+        <!-- Konto Button - Funktioniert jetzt! -->
         <div class="account-button-container">
-            <button class="account-btn" id="newAccountBtn" onclick="alert('BUTTON FUNKTIONIERT!')" style="cursor: pointer; background: red !important; border: 3px solid yellow !important;">
+            <button class="account-btn" id="newAccountBtn" onclick="handleNewAccountButtonClick()">
                 <span class="btn-icon">👤</span>
                 <span class="btn-text">Konto</span>
             </button>
