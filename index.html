@@ -2453,9 +2453,9 @@
 
         <!-- Konto Button - Funktioniert jetzt! -->
         <div class="account-button-container">
-            <button class="account-btn" id="newAccountBtn" onclick="handleNewAccountButtonClick()">
+            <button class="account-btn" id="newAccountBtn" onclick="handleAccountClick()">
                 <span class="btn-icon">👤</span>
-                <span class="btn-text">Konto</span>
+                <span class="btn-text">Anmelden</span>
             </button>
         </div>
 
@@ -5028,13 +5028,12 @@
 
         function updateUIAfterAuth() {
             const analysisTab = document.getElementById('analysisTab');
-            const accountBtn = document.getElementById('newAccountBtn'); // NEUER BUTTON!
+            const accountBtn = document.getElementById('newAccountBtn');
             const accountDropdown = document.getElementById('accountDropdown');
             const adminItem = document.getElementById('adminItem');
             
             if (currentUser) {
-                // Konto-Button mit Benutzernamen aktualisieren
-                // WICHTIG: Nur den Text ändern, nicht den gesamten innerHTML
+                // Benutzer ist angemeldet - Button zeigt Benutzernamen
                 const btnText = accountBtn.querySelector('.btn-text');
                 if (btnText) {
                     btnText.textContent = currentUser.username;
@@ -5050,10 +5049,10 @@
                 // Blur-Overlay ausblenden
                 hideAnalysisBlurOverlay();
             } else {
-                // Konto-Button auf Standard zurücksetzen
+                // Benutzer ist nicht angemeldet - Button zeigt "Anmelden"
                 const btnText = accountBtn.querySelector('.btn-text');
                 if (btnText) {
-                    btnText.textContent = 'Konto';
+                    btnText.textContent = 'Anmelden';
                 }
                 
                 // Dropdown schließen
@@ -5660,9 +5659,9 @@
             }, 1000);
         });
         
-        // NEUE Konto-Button Click-Funktion - Garantiert funktioniert!
-        function handleNewAccountButtonClick() {
-            console.log('🖱️ NEUER Konto-Button geklickt!');
+        // Konto-Button Click-Funktion - Garantiert funktioniert!
+        function handleAccountClick() {
+            console.log('🖱️ Konto-Button geklickt!');
             console.log('👤 Aktueller Benutzer:', currentUser);
             
             if (currentUser) {
