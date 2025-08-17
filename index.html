@@ -5253,7 +5253,7 @@
                 showMessage('success', 'Benutzerliste von der Cloud aktualisiert!', 'admin');
             } else {
                 // Lokale Daten neu laden
-                loadUsersWithTimestamp();
+                loadLocalUsers();
                 updateAdminUserList();
                 showMessage('success', 'Lokale Benutzerliste aktualisiert!', 'admin');
             }
@@ -5291,17 +5291,36 @@
             
             try {
                 const usersSnapshot = await firestore.collection('users').get();
-                users = [];
+                const firestoreUsers = [];
                 
                 usersSnapshot.forEach(doc => {
                     const userData = doc.data();
-                    users.push({
+                    firestoreUsers.push({
                         id: doc.id,
                         ...userData
                     });
                 });
                 
-                console.log('✅ Benutzer aus Firestore geladen:', users.length);
+                console.log('✅ Benutzer aus Firestore geladen:', firestoreUsers.length);
+                
+                // Firestore-Benutzer mit lokalen DEFAULT_USERS kombinieren
+                // WICHTIG: Firestore-Benutzer haben Vorrang vor lokalen
+                const combinedUsers = [...DEFAULT_USERS];
+                
+                // Firestore-Benutzer hinzufügen/aktualisieren
+                firestoreUsers.forEach(firestoreUser => {
+                    const existingIndex = combinedUsers.findIndex(u => u.username === firestoreUser.username);
+                    if (existingIndex >= 0) {
+                        // Lokalen Benutzer mit Firestore-Daten aktualisieren
+                        combinedUsers[existingIndex] = { ...firestoreUser };
+                    } else {
+                        // Neuen Benutzer hinzufügen
+                        combinedUsers.push(firestoreUser);
+                    }
+                });
+                
+                // Globale users-Liste aktualisieren
+                users = combinedUsers;
                 
                 // Lokalen Cache aktualisieren
                 saveUsersWithTimestamp();
@@ -5310,10 +5329,32 @@
                 if (currentUser) {
                     updateUIAfterAuth();
                 }
+                
+                console.log('✅ Kombinierte Benutzerliste:', users.length, 'Benutzer');
             } catch (error) {
                 console.error('❌ Fehler beim Laden aus Firestore:', error);
                 // Fallback: Lokale Daten laden
                 loadLocalUsers();
+            }
+        }
+
+        // Lokale Benutzer laden (Fallback)
+        function loadLocalUsers() {
+            console.log('🔄 Lade lokale Benutzerdaten...');
+            
+            // Zuerst versuchen, gespeicherte Daten zu laden
+            if (loadUsersWithTimestamp()) {
+                console.log('✅ Lokale Benutzerdaten geladen:', users.length, 'Benutzer');
+                return;
+            }
+            
+            // Fallback: CSV-Daten importieren
+            importCSVData();
+            
+            // Sicherstellen dass mindestens DEFAULT_USERS verfügbar sind
+            if (users.length === 0) {
+                users = [...DEFAULT_USERS];
+                console.log('⚠️ Verwende DEFAULT_USERS als Fallback');
             }
         }
 
@@ -5366,6 +5407,12 @@
                     }
                     console.log('✅ Alle Benutzer mit Firestore synchronisiert');
                     showMessage('success', 'Alle Benutzer mit der Cloud synchronisiert!', 'admin');
+                    
+                    // Nach der Synchronisation: Benutzer aus Firestore neu laden
+                    // um sicherzustellen, dass alle IDs korrekt gesetzt sind
+                    await loadUsersFromFirestore();
+                    updateAdminUserList();
+                    
                     return true;
                 } catch (error) {
                     console.error('❌ Fehler bei der Synchronisation:', error);
@@ -5374,7 +5421,7 @@
                 }
             } else {
                 // Fallback: Lokale Daten neu laden
-                loadUsersWithTimestamp();
+                loadLocalUsers();
                 updateAdminUserList();
                 showMessage('success', 'Lokale Benutzerliste aktualisiert!', 'admin');
                 return true;
@@ -5457,37 +5504,13 @@
         // Benutzerdaten beim Laden der Seite wiederherstellen
         function restoreUserSession() {
             const savedUser = localStorage.getItem('currentUser');
-            const savedUsers = localStorage.getItem('users');
             const sessionStartTime = localStorage.getItem('sessionStartTime');
             
             console.log('=== RESTORE SESSION DEBUG ===');
-            console.log('DEFAULT_USERS:', DEFAULT_USERS);
+            console.log('Aktuelle users-Liste:', users);
             
-            // IMMER zuerst Standard-Admin-Daten setzen
-            users = [...DEFAULT_USERS];
-            console.log('Users nach DEFAULT_USERS:', users);
-            
-            // Dann gespeicherte Benutzer laden (falls vorhanden)
-            if (savedUsers) {
-                try {
-                    const loadedUsers = JSON.parse(savedUsers);
-                    console.log('Geladene Benutzer aus localStorage:', loadedUsers);
-                    
-                    // Nur neue Benutzer hinzufügen, Admin-Daten NICHT überschreiben
-                    const newUsers = loadedUsers.filter(loadedUser => 
-                        !DEFAULT_USERS.some(defaultUser => defaultUser.username === loadedUser.username)
-                    );
-                    
-                    console.log('Neue Benutzer zum Hinzufügen:', newUsers);
-                    
-                    // Standard-Admin-Daten + neue Benutzer
-                    users = [...DEFAULT_USERS, ...newUsers];
-                } catch (error) {
-                    console.error('Fehler beim Laden der gespeicherten Benutzer:', error);
-                    // Bei Fehler nur Standard-Daten verwenden
-                    users = [...DEFAULT_USERS];
-                }
-            }
+            // WICHTIG: users-Liste wird bereits von loadUsersFromFirestore() oder loadLocalUsers() gesetzt
+            // Hier nur die Session wiederherstellen, nicht die Benutzerliste überschreiben
             
             // Sicherheitscheck: Falls users immer noch leer ist, DEFAULT_USERS verwenden
             if (users.length === 0) {
@@ -5535,8 +5558,18 @@
             console.log('Demo vorhanden:', demoExists);
             
             if (!adminExists || !demoExists) {
-                console.warn('Admin oder Demo fehlt! Füge DEFAULT_USERS hinzu.');
-                users = [...DEFAULT_USERS];
+                console.warn('Admin oder Demo fehlt! Füge fehlende DEFAULT_USERS hinzu.');
+                
+                // Nur fehlende Benutzer hinzufügen, bestehende nicht überschreiben
+                if (!adminExists) {
+                    const adminUser = DEFAULT_USERS.find(u => u.username === 'admin');
+                    if (adminUser) users.push(adminUser);
+                }
+                if (!demoExists) {
+                    const demoUser = DEFAULT_USERS.find(u => u.username === 'demo');
+                    if (demoUser) users.push(demoUser);
+                }
+                
                 console.log('Users nach Korrektur:', users);
             }
         }
@@ -5574,24 +5607,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             initializeAuth();
             
-            // Firebase initialisieren
+            // Firebase initialisieren (lädt automatisch Benutzer aus Firestore)
             initializeFirebase();
             
-            // Zuerst lokale Daten laden
-            if (!loadUsersWithTimestamp()) {
-                // Falls keine lokalen Daten, CSV importieren
-                importCSVData();
-            }
-            
-            restoreUserSession();
-            
-            // Session-Management initialisieren
-            setupActivityListeners();
-            setupPageVisibilityListener();
-            setupBeforeUnloadListener();
-            
-            // Debug: Benutzerliste nach 2 Sekunden anzeigen
-            setTimeout(showUserList, 2000);
+            // Nach Firebase-Initialisierung: Session wiederherstellen
+            // Firebase lädt die Benutzer asynchron, daher warten wir kurz
+            setTimeout(() => {
+                restoreUserSession();
+                
+                // Session-Management initialisieren
+                setupActivityListeners();
+                setupPageVisibilityListener();
+                setupBeforeUnloadListener();
+                
+                // Debug: Benutzerliste nach 2 Sekunden anzeigen
+                setTimeout(showUserList, 2000);
+            }, 1000);
         });
 
         // Fazit basierend auf allen Indikatoren aktualisieren
