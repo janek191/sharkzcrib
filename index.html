@@ -1530,7 +1530,7 @@
             display: none;
         }
 
-        /* Konto Button */
+        /* Konto Button - Einheitliches Design */
         .account-button-container {
             position: absolute;
             top: 20px;
@@ -1553,6 +1553,8 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            min-width: 120px;
+            justify-content: center;
         }
 
         .account-btn:hover {
@@ -1568,6 +1570,86 @@
 
         .account-btn .btn-text {
             font-weight: 500;
+        }
+
+        /* Dropdown Menu */
+        .account-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(38, 38, 38, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 8px 0;
+            min-width: 200px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .account-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #00ff88;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 15px 15px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 15px 15px;
+        }
+
+        .dropdown-item.admin {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4px;
+            padding-top: 16px;
+        }
+
+        .dropdown-item.logout {
+            color: #ff4757;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4px;
+            padding-top: 16px;
+        }
+
+        .dropdown-item.logout:hover {
+            background: rgba(255, 71, 87, 0.1);
+            color: #ff4757;
+        }
+
+        .dropdown-item .item-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-item .item-text {
+            flex: 1;
         }
 
         /* Blur Overlay für Chartanalyse Content */
@@ -1637,87 +1719,7 @@
             box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
         }
 
-        /* User Menu */
-        .user-menu {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: none;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
 
-        .user-menu.active {
-            display: flex;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, #00ff88, #00ccff);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #000;
-            font-size: 16px;
-            box-shadow: 0 2px 8px rgba(0, 255, 136, 0.3);
-        }
-
-        .logout-btn {
-            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(255, 71, 87, 0.05));
-            border: 1px solid rgba(255, 71, 87, 0.3);
-            color: #ff4757;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            min-width: 80px;
-        }
-
-        .logout-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1));
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
-        }
-
-        .admin-btn {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            color: #ffd700;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            min-width: 80px;
-        }
-
-        .admin-btn:hover {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1));
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        }
 
         /* Admin Panel Styles */
         .admin-controls {
@@ -2457,14 +2459,20 @@
             </button>
         </div>
 
-        <!-- User Menu -->
-        <div class="user-menu" id="userMenu">
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
-                <span id="userName">Benutzer</span>
+        <!-- Account Dropdown Menu -->
+        <div class="account-dropdown" id="accountDropdown">
+            <div class="dropdown-item" id="profileItem">
+                <span class="item-icon">👤</span>
+                <span class="item-text">Profil bearbeiten</span>
             </div>
-            <button class="admin-btn" id="adminBtn" style="display: none;">👑 Admin</button>
-            <button class="logout-btn" id="logoutBtn">Abmelden</button>
+            <div class="dropdown-item admin" id="adminItem" style="display: none;">
+                <span class="item-icon">👑</span>
+                <span class="item-text">Admin Panel</span>
+            </div>
+            <div class="dropdown-item logout" id="logoutItem">
+                <span class="item-icon">🚪</span>
+                <span class="item-text">Abmelden</span>
+            </div>
         </div>
 
         <!-- Hauptnavigation -->
@@ -5020,36 +5028,35 @@
 
         function updateUIAfterAuth() {
             const analysisTab = document.getElementById('analysisTab');
-            const userMenu = document.getElementById('userMenu');
-            const userName = document.getElementById('userName');
-            const userAvatar = document.getElementById('userAvatar');
-            const adminBtn = document.getElementById('adminBtn');
+            const accountBtn = document.getElementById('accountBtn');
+            const accountDropdown = document.getElementById('accountDropdown');
+            const adminItem = document.getElementById('adminItem');
             
             if (currentUser) {
-                // User Menu anzeigen
-                userMenu.classList.add('active');
-                userName.textContent = currentUser.username;
-                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                // Konto-Button mit Benutzernamen aktualisieren
+                accountBtn.innerHTML = `
+                    <span class="btn-icon">👤</span>
+                    <span class="btn-text">${currentUser.username}</span>
+                `;
                 
-                // Admin-Button für Admin-Benutzer anzeigen
+                // Admin-Item für Admin-Benutzer anzeigen
                 if (currentUser.role === 'admin') {
-                    adminBtn.style.display = 'inline-block';
+                    adminItem.style.display = 'flex';
                 } else {
-                    adminBtn.style.display = 'none';
+                    adminItem.style.display = 'none';
                 }
                 
                 // Blur-Overlay ausblenden
                 hideAnalysisBlurOverlay();
-                
-                // Konto-Button ausblenden
-                document.getElementById('accountBtn').style.display = 'none';
             } else {
-                // User Menu ausblenden
-                userMenu.classList.remove('active');
-                adminBtn.style.display = 'none';
+                // Konto-Button auf Standard zurücksetzen
+                accountBtn.innerHTML = `
+                    <span class="btn-icon">👤</span>
+                    <span class="btn-text">Konto</span>
+                `;
                 
-                // Konto-Button anzeigen
-                document.getElementById('accountBtn').style.display = 'flex';
+                // Dropdown schließen
+                accountDropdown.classList.remove('active');
                 
                 // Wenn Analysis-Tab aktiv ist, Blur-Overlay anzeigen
                 if (analysisTab.classList.contains('active')) {
@@ -5060,9 +5067,44 @@
 
         // Event Listener für Authentifizierung
         function initializeAuth() {
-            // Konto Button
-            document.getElementById('accountBtn').addEventListener('click', function() {
-                showAuthModal('login');
+            // Konto Button - Toggle Dropdown oder Login Modal
+            document.getElementById('accountBtn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (currentUser) {
+                    // Benutzer ist angemeldet - Dropdown toggle
+                    const dropdown = document.getElementById('accountDropdown');
+                    dropdown.classList.toggle('active');
+                } else {
+                    // Benutzer ist nicht angemeldet - Login Modal öffnen
+                    showAuthModal('login');
+                }
+            });
+
+            // Dropdown Items Event Listener
+            document.getElementById('profileItem').addEventListener('click', function() {
+                // TODO: Profil bearbeiten implementieren
+                console.log('Profil bearbeiten geklickt');
+                document.getElementById('accountDropdown').classList.remove('active');
+            });
+
+            document.getElementById('adminItem').addEventListener('click', function() {
+                showAdminPanel();
+                document.getElementById('accountDropdown').classList.remove('active');
+            });
+
+            document.getElementById('logoutItem').addEventListener('click', function() {
+                logout();
+                document.getElementById('accountDropdown').classList.remove('active');
+            });
+
+            // Dropdown schließen wenn außerhalb geklickt wird
+            document.addEventListener('click', function(e) {
+                const dropdown = document.getElementById('accountDropdown');
+                const accountBtn = document.getElementById('accountBtn');
+                
+                if (!dropdown.contains(e.target) && !accountBtn.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
             });
 
             // Blur Login Button
@@ -5090,11 +5132,6 @@
                 const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
                 
                 if (password !== passwordConfirm) {
-                    showMessage('error', 'Passwörter stimmen nicht überein!', 'register');
-                    return;
-                }
-                
-                if (password.length < 6) {
                     showMessage('error', 'Passwort muss mindestens 6 Zeichen lang sein!', 'register');
                     return;
                 }
@@ -5124,16 +5161,12 @@
             });
 
             // Admin Panel
-            document.getElementById('adminBtn').addEventListener('click', showAdminPanel);
             document.getElementById('closeAdminModal').addEventListener('click', hideAdminPanel);
             document.getElementById('adminModal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     hideAdminPanel();
                 }
             });
-
-            // Logout
-            document.getElementById('logoutBtn').addEventListener('click', logout);
 
             // ESC-Taste zum Schließen
             document.addEventListener('keydown', function(e) {
