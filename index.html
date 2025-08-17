@@ -2451,11 +2451,18 @@
             <img src="sharkzcrib_logo.PNG" alt="SharkzCrib Logo" class="floating-logo-image">
         </div>
 
-        <!-- Konto Button - Funktioniert jetzt! -->
+        <!-- ZWEI SEPARATE BUTTONS - EINFACH UND FUNKTIONAL! -->
         <div class="account-button-container">
-            <button class="account-btn" id="newAccountBtn" onclick="handleAccountClick()">
-                <span class="btn-icon">👤</span>
+            <!-- Anmelde Button - immer sichtbar wenn nicht angemeldet -->
+            <button class="account-btn" id="loginBtn" onclick="showAuthModal('login')" style="display: flex;">
+                <span class="btn-icon">🔑</span>
                 <span class="btn-text">Anmelden</span>
+            </button>
+            
+            <!-- Mein Konto Button - nur sichtbar wenn angemeldet -->
+            <button class="account-btn" id="accountBtn" onclick="toggleAccountMenu()" style="display: none;">
+                <span class="btn-icon">👤</span>
+                <span class="btn-text">Mein Konto</span>
             </button>
         </div>
 
@@ -5028,34 +5035,36 @@
 
         function updateUIAfterAuth() {
             const analysisTab = document.getElementById('analysisTab');
-            const accountBtn = document.getElementById('newAccountBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            const accountBtn = document.getElementById('accountBtn');
             const accountDropdown = document.getElementById('accountDropdown');
             const adminItem = document.getElementById('adminItem');
             
             if (currentUser) {
-                // Benutzer ist angemeldet - Button zeigt Benutzernamen
+                // Benutzer ist angemeldet
+                console.log('✅ Benutzer angemeldet:', currentUser.username);
+                loginBtn.style.display = 'none';        // Anmelde Button ausblenden
+                accountBtn.style.display = 'flex';      // Mein Konto Button anzeigen
+                
+                // Username im Konto Button anzeigen
                 const btnText = accountBtn.querySelector('.btn-text');
                 if (btnText) {
                     btnText.textContent = currentUser.username;
                 }
                 
-                // Admin-Item für Admin-Benutzer anzeigen
+                // Admin Panel anzeigen/verstecken
                 if (currentUser.role === 'admin') {
                     adminItem.style.display = 'flex';
                 } else {
                     adminItem.style.display = 'none';
                 }
                 
-                // Blur-Overlay ausblenden
                 hideAnalysisBlurOverlay();
             } else {
-                // Benutzer ist nicht angemeldet - Button zeigt "Anmelden"
-                const btnText = accountBtn.querySelector('.btn-text');
-                if (btnText) {
-                    btnText.textContent = 'Anmelden';
-                }
-                
-                // Dropdown schließen
+                // Benutzer ist nicht angemeldet
+                console.log('🔒 Benutzer nicht angemeldet');
+                loginBtn.style.display = 'flex';        // Anmelde Button anzeigen
+                accountBtn.style.display = 'none';      // Mein Konto Button ausblenden
                 accountDropdown.classList.remove('active');
                 
                 // Wenn Analysis-Tab aktiv ist, Blur-Overlay anzeigen
@@ -5089,7 +5098,7 @@
             // Dropdown schließen wenn außerhalb geklickt wird
             document.addEventListener('click', function(e) {
                 const dropdown = document.getElementById('accountDropdown');
-                const accountBtn = document.getElementById('newAccountBtn'); // NEUER BUTTON!
+                const accountBtn = document.getElementById('accountBtn'); // Mein Konto Button
                 
                 if (!dropdown.contains(e.target) && !accountBtn.contains(e.target)) {
                     dropdown.classList.remove('active');
@@ -5659,32 +5668,22 @@
             }, 1000);
         });
         
-        // Konto-Button Click-Funktion - FUNKTIONIERT GARANTIERT!
-        function handleAccountClick() {
-            console.log('🖱️ Konto-Button geklickt!');
-            console.log('👤 Aktueller Benutzer:', currentUser);
-            
-            if (currentUser) {
-                // Benutzer ist angemeldet - Dropdown toggle
-                console.log('✅ Benutzer angemeldet - Toggle Dropdown');
-                const dropdown = document.getElementById('accountDropdown');
-                if (dropdown) {
-                    // Dropdown ein-/ausblenden
-                    if (dropdown.classList.contains('active')) {
-                        dropdown.classList.remove('active');
-                        console.log('📋 Dropdown geschlossen');
-                    } else {
-                        dropdown.classList.add('active');
-                        console.log('📋 Dropdown geöffnet');
-                    }
+        // EINFACHE FUNKTIONEN FÜR ZWEI BUTTONS!
+        
+        // Mein Konto Button - Dropdown öffnen/schließen
+        function toggleAccountMenu() {
+            console.log('🖱️ Mein Konto Button geklickt!');
+            const dropdown = document.getElementById('accountDropdown');
+            if (dropdown) {
+                if (dropdown.classList.contains('active')) {
+                    dropdown.classList.remove('active');
+                    console.log('📋 Dropdown geschlossen');
                 } else {
-                    console.error('❌ Dropdown nicht gefunden!');
-                    alert('Dropdown nicht gefunden!');
+                    dropdown.classList.add('active');
+                    console.log('📋 Dropdown geöffnet');
                 }
             } else {
-                // Benutzer ist nicht angemeldet - Login Modal öffnen
-                console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
-                showAuthModal('login');
+                console.error('❌ Dropdown nicht gefunden!');
             }
         }
 
