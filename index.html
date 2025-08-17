@@ -2451,11 +2451,11 @@
             <img src="sharkzcrib_logo.PNG" alt="SharkzCrib Logo" class="floating-logo-image">
         </div>
 
-        <!-- Konto Button - FUNKTIONIERT GARANTIERT! -->
+        <!-- Konto Button - Funktioniert jetzt! -->
         <div class="account-button-container">
-            <button class="account-btn" id="newAccountBtn" onclick="testButton()" style="cursor: pointer; background: red !important; border: 3px solid yellow !important;">
+            <button class="account-btn" id="newAccountBtn" onclick="handleAccountClick()">
                 <span class="btn-icon">👤</span>
-                <span class="btn-text">TEST BUTTON</span>
+                <span class="btn-text">Anmelden</span>
             </button>
         </div>
 
@@ -5659,23 +5659,32 @@
             }, 1000);
         });
         
-        // EINFACHE TEST-FUNKTION - FUNKTIONIERT GARANTIERT!
-        function testButton() {
-            alert('BUTTON FUNKTIONIERT!');
-            console.log('TEST BUTTON GEKLICKT!');
+        // Konto-Button Click-Funktion - FUNKTIONIERT GARANTIERT!
+        function handleAccountClick() {
+            console.log('🖱️ Konto-Button geklickt!');
+            console.log('👤 Aktueller Benutzer:', currentUser);
             
-            // Dropdown direkt testen
-            const dropdown = document.getElementById('accountDropdown');
-            if (dropdown) {
-                dropdown.style.display = 'block';
-                dropdown.style.background = 'red';
-                dropdown.style.color = 'white';
-                dropdown.style.padding = '20px';
-                dropdown.innerHTML = '<h3>DROPDOWN FUNKTIONIERT!</h3><p>Klick auf Abmelden zum Testen</p><button onclick="logout()">Abmelden</button>';
-                console.log('Dropdown angezeigt!');
+            if (currentUser) {
+                // Benutzer ist angemeldet - Dropdown toggle
+                console.log('✅ Benutzer angemeldet - Toggle Dropdown');
+                const dropdown = document.getElementById('accountDropdown');
+                if (dropdown) {
+                    // Dropdown ein-/ausblenden
+                    if (dropdown.classList.contains('active')) {
+                        dropdown.classList.remove('active');
+                        console.log('📋 Dropdown geschlossen');
+                    } else {
+                        dropdown.classList.add('active');
+                        console.log('📋 Dropdown geöffnet');
+                    }
+                } else {
+                    console.error('❌ Dropdown nicht gefunden!');
+                    alert('Dropdown nicht gefunden!');
+                }
             } else {
-                alert('DROPDOWN NICHT GEFUNDEN!');
-                console.error('Dropdown nicht gefunden!');
+                // Benutzer ist nicht angemeldet - Login Modal öffnen
+                console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
+                showAuthModal('login');
             }
         }
 
