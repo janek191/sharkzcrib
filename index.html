@@ -5067,15 +5067,23 @@
 
         // Event Listener für Authentifizierung
         function initializeAuth() {
+            console.log('🔧 Initialisiere Authentifizierung...');
+            
             // Konto Button - Toggle Dropdown oder Login Modal
             document.getElementById('accountBtn').addEventListener('click', function(e) {
                 e.stopPropagation();
+                console.log('🖱️ Konto-Button geklickt');
+                console.log('👤 Aktueller Benutzer:', currentUser);
+                
                 if (currentUser) {
                     // Benutzer ist angemeldet - Dropdown toggle
+                    console.log('✅ Benutzer angemeldet - Toggle Dropdown');
                     const dropdown = document.getElementById('accountDropdown');
                     dropdown.classList.toggle('active');
+                    console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
                 } else {
                     // Benutzer ist nicht angemeldet - Login Modal öffnen
+                    console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
                     showAuthModal('login');
                 }
             });
@@ -5638,7 +5646,7 @@
 
         // Authentifizierung initialisieren
         document.addEventListener('DOMContentLoaded', function() {
-            initializeAuth();
+            console.log('🚀 DOM geladen - Starte Initialisierung...');
             
             // Firebase initialisieren (lädt automatisch Benutzer aus Firestore)
             initializeFirebase();
@@ -5646,7 +5654,12 @@
             // Nach Firebase-Initialisierung: Session wiederherstellen
             // Firebase lädt die Benutzer asynchron, daher warten wir kurz
             setTimeout(() => {
+                console.log('⏰ Firebase-Timeout abgelaufen - Stelle Session wieder her...');
                 restoreUserSession();
+                
+                // JETZT erst die Authentifizierung initialisieren
+                console.log('🔐 Initialisiere Authentifizierung nach Session-Restore...');
+                initializeAuth();
                 
                 // Session-Management initialisieren
                 setupActivityListeners();
