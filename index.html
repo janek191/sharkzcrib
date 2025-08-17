@@ -2450,8 +2450,8 @@
                 <span class="btn-text">Anmelden</span>
             </button>
             
-            <!-- Mein Konto Button - MIT DROPDOWN MENÜ! -->
-            <button class="account-btn" id="accountBtn" onclick="toggleAccountMenu()" style="display: none;">
+            <!-- Mein Konto Button - EINFACH UND FUNKTIONAL! -->
+            <button class="account-btn" id="accountBtn" onclick="showSimpleMenu()" style="display: none;">
                 <span class="btn-icon">👤</span>
                 <span class="btn-text">Mein Konto</span>
             </button>
@@ -5662,45 +5662,7 @@
             }, 1000);
         });
         
-        // KOMPLETT NEUE FUNKTIONEN FÜR DEN BUTTON!
-        
-        // Mein Konto Button - Dropdown öffnen/schließen
-        function toggleAccountMenu() {
-            console.log('🖱️ Mein Konto Button geklickt!');
-            console.log('👤 Aktueller Benutzer:', currentUser);
-            
-            const dropdown = document.getElementById('accountDropdown');
-            if (!dropdown) {
-                console.error('❌ Dropdown nicht gefunden!');
-                alert('Dropdown nicht gefunden!');
-                return;
-            }
-            
-            // Dropdown Status prüfen und umschalten
-            const isVisible = dropdown.style.display === 'block';
-            
-            if (isVisible) {
-                // Dropdown schließen
-                dropdown.style.display = 'none';
-                console.log('📋 Dropdown geschlossen');
-            } else {
-                // Dropdown öffnen
-                dropdown.style.display = 'block';
-                console.log('📋 Dropdown geöffnet');
-                
-                // Admin Item anzeigen/verstecken basierend auf Benutzerrolle
-                const adminItem = document.getElementById('adminItem');
-                if (adminItem && currentUser) {
-                    if (currentUser.role === 'admin') {
-                        adminItem.style.display = 'flex';
-                        console.log('👑 Admin Panel angezeigt');
-                    } else {
-                        adminItem.style.display = 'none';
-                        console.log('👑 Admin Panel versteckt');
-                    }
-                }
-            }
-        }
+
 
         // Fazit basierend auf allen Indikatoren aktualisieren
         function updateSummary(rsi, macd, ma20, sentiment) {
@@ -5758,6 +5720,14 @@
             
             if (descElement) {
                 descElement.textContent = overallDescription;
+            }
+        }
+        
+        // EINFACHE FUNKTION FÜR DEN BUTTON!
+        function showSimpleMenu() {
+            const dropdown = document.getElementById('accountDropdown');
+            if (dropdown) {
+                dropdown.style.display = 'block';
             }
         }
     </script>
