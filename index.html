@@ -1535,7 +1535,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            z-index: 1000;
+            z-index: 9999; /* VIEL HÖHERER Z-INDEX */
+            pointer-events: auto; /* STELLE SICHER DASS KLICKS FUNKTIONIEREN */
         }
 
         .account-btn {
@@ -2453,7 +2454,7 @@
 
         <!-- NEUER Konto Button - Garantiert funktioniert! -->
         <div class="account-button-container">
-            <button class="account-btn" id="newAccountBtn" onclick="handleNewAccountButtonClick()">
+            <button class="account-btn" id="newAccountBtn" onclick="alert('BUTTON FUNKTIONIERT!')" style="cursor: pointer; background: red !important; border: 3px solid yellow !important;">
                 <span class="btn-icon">👤</span>
                 <span class="btn-text">Konto</span>
             </button>
