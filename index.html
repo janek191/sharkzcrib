@@ -5193,8 +5193,12 @@
                 // Benutzer ist angemeldet - Dropdown toggle
                 console.log('✅ Benutzer angemeldet - Toggle Dropdown');
                 const dropdown = document.getElementById('accountDropdown');
-                dropdown.classList.toggle('active');
-                console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
+                if (dropdown) {
+                    dropdown.classList.toggle('active');
+                    console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
+                } else {
+                    console.error('❌ Dropdown nicht gefunden!');
+                }
             } else {
                 // Benutzer ist nicht angemeldet - Login Modal öffnen
                 console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
@@ -5678,6 +5682,10 @@
                 console.log('🔐 Initialisiere Authentifizierung nach Session-Restore...');
                 initializeAuth();
                 
+                // Zusätzlich: Event Listener direkt setzen als Fallback
+                console.log('🔄 Setze Event Listener als Fallback...');
+                setupAccountButtonFallback();
+                
                 // Session-Management initialisieren
                 setupActivityListeners();
                 setupPageVisibilityListener();
@@ -5687,6 +5695,46 @@
                 setTimeout(showUserList, 2000);
             }, 1000);
         });
+        
+        // Fallback Event Listener für den Konto-Button
+        function setupAccountButtonFallback() {
+            const accountBtn = document.getElementById('accountBtn');
+            if (accountBtn) {
+                console.log('🔄 Setze Fallback Event Listener für Konto-Button...');
+                
+                // Alle bestehenden Event Listener entfernen
+                accountBtn.replaceWith(accountBtn.cloneNode(true));
+                
+                // Neuen Button referenzieren
+                const newAccountBtn = document.getElementById('accountBtn');
+                
+                // Event Listener direkt setzen
+                newAccountBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🖱️ FALLBACK: Konto-Button geklickt!');
+                    console.log('👤 Aktueller Benutzer:', currentUser);
+                    
+                    if (currentUser) {
+                        console.log('✅ Benutzer angemeldet - Toggle Dropdown');
+                        const dropdown = document.getElementById('accountDropdown');
+                        if (dropdown) {
+                            dropdown.classList.toggle('active');
+                            console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
+                        } else {
+                            console.error('❌ Dropdown nicht gefunden!');
+                        }
+                    } else {
+                        console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
+                        showAuthModal('login');
+                    }
+                });
+                
+                console.log('✅ Fallback Event Listener gesetzt');
+            } else {
+                console.error('❌ Konto-Button nicht gefunden!');
+            }
+        }
 
         // Fazit basierend auf allen Indikatoren aktualisieren
         function updateSummary(rsi, macd, ma20, sentiment) {
