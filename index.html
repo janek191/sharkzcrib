@@ -2451,9 +2451,9 @@
             <img src="sharkzcrib_logo.PNG" alt="SharkzCrib Logo" class="floating-logo-image">
         </div>
 
-        <!-- Konto Button -->
+        <!-- NEUER Konto Button - Garantiert funktioniert! -->
         <div class="account-button-container">
-            <button class="account-btn" id="accountBtn">
+            <button class="account-btn" id="newAccountBtn" onclick="handleNewAccountButtonClick()">
                 <span class="btn-icon">👤</span>
                 <span class="btn-text">Konto</span>
             </button>
@@ -5028,7 +5028,7 @@
 
         function updateUIAfterAuth() {
             const analysisTab = document.getElementById('analysisTab');
-            const accountBtn = document.getElementById('accountBtn');
+            const accountBtn = document.getElementById('newAccountBtn'); // NEUER BUTTON!
             const accountDropdown = document.getElementById('accountDropdown');
             const adminItem = document.getElementById('adminItem');
             
@@ -5069,17 +5069,6 @@
         // Event Listener für Authentifizierung
         function initializeAuth() {
             console.log('🔧 Initialisiere Authentifizierung...');
-            
-            // Konto Button - Toggle Dropdown oder Login Modal
-            const accountBtn = document.getElementById('accountBtn');
-            
-            // Event Listener entfernen falls bereits vorhanden
-            accountBtn.removeEventListener('click', handleAccountButtonClick);
-            
-            // Neuen Event Listener hinzufügen
-            accountBtn.addEventListener('click', handleAccountButtonClick);
-            
-            console.log('✅ Event Listener für Konto-Button gesetzt');
 
             // Dropdown Items Event Listener
             document.getElementById('profileItem').addEventListener('click', function() {
@@ -5101,7 +5090,7 @@
             // Dropdown schließen wenn außerhalb geklickt wird
             document.addEventListener('click', function(e) {
                 const dropdown = document.getElementById('accountDropdown');
-                const accountBtn = document.getElementById('accountBtn');
+                const accountBtn = document.getElementById('newAccountBtn'); // NEUER BUTTON!
                 
                 if (!dropdown.contains(e.target) && !accountBtn.contains(e.target)) {
                     dropdown.classList.remove('active');
@@ -5181,29 +5170,6 @@
                     hideAdminPanel();
                 }
             });
-        }
-        
-        // Separate Funktion für den Button-Click (wird nicht überschrieben)
-        function handleAccountButtonClick(e) {
-            e.stopPropagation();
-            console.log('🖱️ Konto-Button geklickt');
-            console.log('👤 Aktueller Benutzer:', currentUser);
-            
-            if (currentUser) {
-                // Benutzer ist angemeldet - Dropdown toggle
-                console.log('✅ Benutzer angemeldet - Toggle Dropdown');
-                const dropdown = document.getElementById('accountDropdown');
-                if (dropdown) {
-                    dropdown.classList.toggle('active');
-                    console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
-                } else {
-                    console.error('❌ Dropdown nicht gefunden!');
-                }
-            } else {
-                // Benutzer ist nicht angemeldet - Login Modal öffnen
-                console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
-                showAuthModal('login');
-            }
         }
 
         // Blur-Overlay Funktionen
@@ -5682,9 +5648,7 @@
                 console.log('🔐 Initialisiere Authentifizierung nach Session-Restore...');
                 initializeAuth();
                 
-                // Zusätzlich: Event Listener direkt setzen als Fallback
-                console.log('🔄 Setze Event Listener als Fallback...');
-                setupAccountButtonFallback();
+
                 
                 // Session-Management initialisieren
                 setupActivityListeners();
@@ -5696,43 +5660,25 @@
             }, 1000);
         });
         
-        // Fallback Event Listener für den Konto-Button
-        function setupAccountButtonFallback() {
-            const accountBtn = document.getElementById('accountBtn');
-            if (accountBtn) {
-                console.log('🔄 Setze Fallback Event Listener für Konto-Button...');
-                
-                // Alle bestehenden Event Listener entfernen
-                accountBtn.replaceWith(accountBtn.cloneNode(true));
-                
-                // Neuen Button referenzieren
-                const newAccountBtn = document.getElementById('accountBtn');
-                
-                // Event Listener direkt setzen
-                newAccountBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log('🖱️ FALLBACK: Konto-Button geklickt!');
-                    console.log('👤 Aktueller Benutzer:', currentUser);
-                    
-                    if (currentUser) {
-                        console.log('✅ Benutzer angemeldet - Toggle Dropdown');
-                        const dropdown = document.getElementById('accountDropdown');
-                        if (dropdown) {
-                            dropdown.classList.toggle('active');
-                            console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
-                        } else {
-                            console.error('❌ Dropdown nicht gefunden!');
-                        }
-                    } else {
-                        console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
-                        showAuthModal('login');
-                    }
-                });
-                
-                console.log('✅ Fallback Event Listener gesetzt');
+        // NEUE Konto-Button Click-Funktion - Garantiert funktioniert!
+        function handleNewAccountButtonClick() {
+            console.log('🖱️ NEUER Konto-Button geklickt!');
+            console.log('👤 Aktueller Benutzer:', currentUser);
+            
+            if (currentUser) {
+                // Benutzer ist angemeldet - Dropdown toggle
+                console.log('✅ Benutzer angemeldet - Toggle Dropdown');
+                const dropdown = document.getElementById('accountDropdown');
+                if (dropdown) {
+                    dropdown.classList.toggle('active');
+                    console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
+                } else {
+                    console.error('❌ Dropdown nicht gefunden!');
+                }
             } else {
-                console.error('❌ Konto-Button nicht gefunden!');
+                // Benutzer ist nicht angemeldet - Login Modal öffnen
+                console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
+                showAuthModal('login');
             }
         }
 
