@@ -5034,10 +5034,11 @@
             
             if (currentUser) {
                 // Konto-Button mit Benutzernamen aktualisieren
-                accountBtn.innerHTML = `
-                    <span class="btn-icon">👤</span>
-                    <span class="btn-text">${currentUser.username}</span>
-                `;
+                // WICHTIG: Nur den Text ändern, nicht den gesamten innerHTML
+                const btnText = accountBtn.querySelector('.btn-text');
+                if (btnText) {
+                    btnText.textContent = currentUser.username;
+                }
                 
                 // Admin-Item für Admin-Benutzer anzeigen
                 if (currentUser.role === 'admin') {
@@ -5050,10 +5051,10 @@
                 hideAnalysisBlurOverlay();
             } else {
                 // Konto-Button auf Standard zurücksetzen
-                accountBtn.innerHTML = `
-                    <span class="btn-icon">👤</span>
-                    <span class="btn-text">Konto</span>
-                `;
+                const btnText = accountBtn.querySelector('.btn-text');
+                if (btnText) {
+                    btnText.textContent = 'Konto';
+                }
                 
                 // Dropdown schließen
                 accountDropdown.classList.remove('active');
@@ -5070,23 +5071,15 @@
             console.log('🔧 Initialisiere Authentifizierung...');
             
             // Konto Button - Toggle Dropdown oder Login Modal
-            document.getElementById('accountBtn').addEventListener('click', function(e) {
-                e.stopPropagation();
-                console.log('🖱️ Konto-Button geklickt');
-                console.log('👤 Aktueller Benutzer:', currentUser);
-                
-                if (currentUser) {
-                    // Benutzer ist angemeldet - Dropdown toggle
-                    console.log('✅ Benutzer angemeldet - Toggle Dropdown');
-                    const dropdown = document.getElementById('accountDropdown');
-                    dropdown.classList.toggle('active');
-                    console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
-                } else {
-                    // Benutzer ist nicht angemeldet - Login Modal öffnen
-                    console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
-                    showAuthModal('login');
-                }
-            });
+            const accountBtn = document.getElementById('accountBtn');
+            
+            // Event Listener entfernen falls bereits vorhanden
+            accountBtn.removeEventListener('click', handleAccountButtonClick);
+            
+            // Neuen Event Listener hinzufügen
+            accountBtn.addEventListener('click', handleAccountButtonClick);
+            
+            console.log('✅ Event Listener für Konto-Button gesetzt');
 
             // Dropdown Items Event Listener
             document.getElementById('profileItem').addEventListener('click', function() {
@@ -5144,6 +5137,11 @@
                     return;
                 }
                 
+                if (password.length < 6) {
+                    showMessage('error', 'Passwort muss mindestens 6 Zeichen lang sein!', 'register');
+                    return;
+                }
+                
                 register(username, email, password);
             });
 
@@ -5183,6 +5181,25 @@
                     hideAdminPanel();
                 }
             });
+        }
+        
+        // Separate Funktion für den Button-Click (wird nicht überschrieben)
+        function handleAccountButtonClick(e) {
+            e.stopPropagation();
+            console.log('🖱️ Konto-Button geklickt');
+            console.log('👤 Aktueller Benutzer:', currentUser);
+            
+            if (currentUser) {
+                // Benutzer ist angemeldet - Dropdown toggle
+                console.log('✅ Benutzer angemeldet - Toggle Dropdown');
+                const dropdown = document.getElementById('accountDropdown');
+                dropdown.classList.toggle('active');
+                console.log('📋 Dropdown Status:', dropdown.classList.contains('active'));
+            } else {
+                // Benutzer ist nicht angemeldet - Login Modal öffnen
+                console.log('🔒 Benutzer nicht angemeldet - Öffne Login Modal');
+                showAuthModal('login');
+            }
         }
 
         // Blur-Overlay Funktionen
